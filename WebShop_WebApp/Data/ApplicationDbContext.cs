@@ -12,5 +12,8 @@ namespace WebShop_WebApp.Data
         }
 
         public DbSet<Product> Products { get; set; }
+
+
+        //Test
     }
 }
