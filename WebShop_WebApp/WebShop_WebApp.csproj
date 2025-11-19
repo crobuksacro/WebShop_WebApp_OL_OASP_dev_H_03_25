@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop_Shared\WebShop_Shared.csproj" />
+  </ItemGroup>
+
 </Project>
