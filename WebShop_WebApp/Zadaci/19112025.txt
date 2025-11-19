@@ -1,0 +1,3 @@
+﻿1. Napravite Unutar foldera Models ostale modele za CRUD operacije:
+2. Unutar projekta WebShop_WebApp, napravite foleder sa Services. 
+	Unutar njega napravite ProductService klasu koja će imati metode za CRUD operacije nad proizvodima 
