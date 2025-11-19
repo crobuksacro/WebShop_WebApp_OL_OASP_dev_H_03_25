@@ -13,6 +13,8 @@ namespace WebShop_WebApp.Data
 
         public DbSet<Product> Products { get; set; }
 
-        //ja sam drugi komentar
+
+
+        //Ja sam neki novi comment2 
     }
 }
