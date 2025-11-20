@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebShop_WebApp.Data;
@@ -19,6 +20,19 @@ namespace WebShop_WebApp
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+
+            #region AutoMapper Configuration
+            var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.AddProfile<MappingProfile>();
+            }, loggerFactory);
+
+            var mapper = configuration.CreateMapper();
+            builder.Services.AddSingleton(mapper);
+            #endregion
+
+
 
             var app = builder.Build();
 
