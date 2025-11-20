@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Mapping;
+using WebShop_WebApp.Services.Implementations;
+using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp
 {
@@ -21,7 +23,7 @@ namespace WebShop_WebApp
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             #region AutoMapper Configuration
             var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
