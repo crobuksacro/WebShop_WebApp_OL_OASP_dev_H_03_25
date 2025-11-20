@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebShop_WebApp.Data;
+using WebShop_WebApp.Mapping;
 
 namespace WebShop_WebApp
 {

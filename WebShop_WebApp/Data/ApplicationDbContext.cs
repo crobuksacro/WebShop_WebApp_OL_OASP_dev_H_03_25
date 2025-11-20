@@ -12,7 +12,7 @@ namespace WebShop_WebApp.Data
         {
         }
 
-        public DbSet<Product> Products { get; set; }
+
 
         public override int SaveChanges()
         {
@@ -77,5 +77,10 @@ namespace WebShop_WebApp.Data
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
+
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
     }
 }
