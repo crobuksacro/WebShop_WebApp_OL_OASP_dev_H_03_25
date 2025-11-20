@@ -5,3 +5,6 @@
 4. Unutar aplikacije/projekta WebShop_WebApp dodati novi view, sa prikazom svih kategroija
 5. Dodati u navigaciji link ka tom view-u
 6. Napraviti GUI sa CRUD KATEGORIJA
+
+7. Prikazati listu proizvoda unutar izabrane kategorije
+8. Napraviti CRUD za unos proizvoda unutar izabrane kategorije
