@@ -80,7 +80,7 @@ namespace WebShop_WebApp.Data
 
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductCategory> ProductCategorys { get; set; }
 
     }
 }

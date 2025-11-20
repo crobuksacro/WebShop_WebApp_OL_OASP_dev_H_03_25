@@ -102,5 +102,92 @@ namespace WebShop_WebApp.Services.Implementations
             await _context.SaveChangesAsync();
             return _mapper.Map<ProductViewModel>(dbo);
         }
+
+
+
+
+
+        /// <summary>
+        /// Adds a new ProductCategory to the database.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<ProductCategoryViewModel> AddProductCategory(ProductCategoryBinding model)
+        {
+            var dbo = _mapper.Map<ProductCategory>(model);
+            _context.ProductCategorys.Add(dbo);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProductCategoryViewModel>(dbo);
+        }
+
+
+        /// <summary>
+        /// Gets all ProductCategorys from the database.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ProductCategoryViewModel>> GetAllProductCategorys(bool? valid = null)
+        {
+
+            if (!valid.HasValue)
+            {
+                valid = true;
+            }
+
+            var ProductCategorys = await _context.ProductCategorys
+                .Where(p => p.Valid == valid)
+                .ToListAsync();
+            return _mapper.Map<List<ProductCategoryViewModel>>(ProductCategorys);
+        }
+        /// <summary>
+        /// Gets a ProductCategory by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ProductCategoryViewModel?> GetByIdProductCategory(long id)
+        {
+            var ProductCategory = await _context.ProductCategorys
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (ProductCategory == null)
+            {
+                return null;
+            }
+            return _mapper.Map<ProductCategoryViewModel>(ProductCategory);
+
+        }
+
+        /// <summary>
+        /// Updates an existing ProductCategory.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<ProductCategoryViewModel?> UpdateProductCategory(ProductCategoryUpdateBinding model)
+        {
+            var dbo = await _context.ProductCategorys
+                .FirstOrDefaultAsync(p => p.Id == model.Id);
+            if (dbo == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(model, dbo);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProductCategoryViewModel>(dbo);
+
+        }
+
+        /// <summary>
+        /// Deletes a ProductCategory by setting its Valid property to false. 
+        /// soft delete.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ProductCategoryViewModel> DeleteProductCategory(long id)
+        {
+            var dbo = await _context.ProductCategorys
+                .FirstOrDefaultAsync(p => p.Id == id);
+            dbo!.Valid = false;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProductCategoryViewModel>(dbo);
+        }
     }
 }
