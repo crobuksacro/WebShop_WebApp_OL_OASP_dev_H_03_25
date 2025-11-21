@@ -6,6 +6,8 @@ namespace WebShop_Shared.Model.ViewModel
     {
         public long Id { get; set; }
         public long? ProductCategoryId { get; set; }
+        public ProductCategoryViewModel? ProductCategory { get; set; }
+
         public long? QuantityTypeId { get; set; }
         public QuantityTypeViewModel? QuantityType { get; set; }
 

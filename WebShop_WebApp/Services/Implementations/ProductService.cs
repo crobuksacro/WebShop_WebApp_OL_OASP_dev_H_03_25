@@ -47,6 +47,8 @@ namespace WebShop_WebApp.Services.Implementations
             }
 
             var products = await _context.Products
+                .Include(p => p.ProductCategory)
+                .Include(p => p.QuantityType)
                 .Where(p => p.Valid == valid)
                 .ToListAsync();
             return _mapper.Map<List<ProductViewModel>>(products);
