@@ -64,7 +64,11 @@ namespace WebShop_WebApp.Services.Implementations
             {
                 return null;
             }
-            return _mapper.Map<ProductViewModel>(product);
+
+            var result = _mapper.Map<ProductViewModel>(product);
+            result.QuantityTypes = await GetAllQuantityTypes();
+
+            return result;
 
         }
 
@@ -103,10 +107,6 @@ namespace WebShop_WebApp.Services.Implementations
             await _context.SaveChangesAsync();
             return _mapper.Map<ProductViewModel>(dbo);
         }
-
-
-
-
 
         /// <summary>
         /// Adds a new ProductCategory to the database.
@@ -147,7 +147,8 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<ProductCategoryViewModel?> GetByIdProductCategory(long id)
         {
             var ProductCategory = await _context.ProductCategorys
-                .Include(y=>y.Products.Where(y=>y.Valid))
+                .Include(y => y.Products.Where(y => y.Valid))
+                .ThenInclude(z => z.QuantityType)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (ProductCategory == null)
             {
@@ -190,6 +191,23 @@ namespace WebShop_WebApp.Services.Implementations
             dbo!.Valid = false;
             await _context.SaveChangesAsync();
             return _mapper.Map<ProductCategoryViewModel>(dbo);
+        }
+
+        /// <summary>
+        /// Gets all quantity types from the database.
+        /// </summary>
+        /// <param name="valid"></param>
+        /// <returns></returns>
+        public async Task<List<QuantityTypeViewModel>> GetAllQuantityTypes(bool? valid = null)
+        {
+            if (!valid.HasValue)
+            {
+                valid = true;
+            }
+            var quantityTypes = await _context.QuantityTypes
+                .Where(p => p.Valid == valid)
+                .ToListAsync();
+            return _mapper.Map<List<QuantityTypeViewModel>>(quantityTypes);
         }
     }
 }

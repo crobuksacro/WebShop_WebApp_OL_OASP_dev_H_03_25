@@ -39,6 +39,7 @@
                     <th scope="col">Opis</th>
                     <th scope="col">Cijena</th>
                     <th scope="col">Količina</th>
+                    <th scope="col">Tip Količina</th>
                     <th scope="col">Uredi</th>
                 </tr>
             </thead>
@@ -61,6 +62,12 @@
                         </td>
                         <td>
                             @item.Quantity
+                        </td>
+                        <td>
+                            @if (item.QuantityType != null)
+                            {
+                                @item.QuantityType.Name
+                            }
                         </td>
                         <td>
                             @Html.ActionLink("Uredi", "EditProduct", new { id = item.Id })

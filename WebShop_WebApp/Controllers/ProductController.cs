@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using WebShop_Shared.Model.Binding;
 using WebShop_WebApp.Services.Interfaces;
 
@@ -66,6 +65,7 @@ namespace WebShop_WebApp.Controllers
         public async Task<IActionResult> EditProduct(long id)
         {
             var product = await _productService.GetById(id);
+           
             return View(product);
         }
 
@@ -74,7 +74,7 @@ namespace WebShop_WebApp.Controllers
         public async Task<IActionResult> EditProduct(ProductUpdateBinding model)
         {
             var product = await _productService.Update(model);
-            return RedirectToAction("Products");
+            return RedirectToAction("Category", new { id = product.ProductCategoryId });
         }
 
 
@@ -94,9 +94,12 @@ namespace WebShop_WebApp.Controllers
       
         public async Task<IActionResult> CreateProduct(long categoryId)
         {
+
+
             return View(new ProductBinding
             {
-                ProductCategoryId = categoryId
+                ProductCategoryId = categoryId,
+                QuantityTypes = await _productService.GetAllQuantityTypes()
             });
         }
 

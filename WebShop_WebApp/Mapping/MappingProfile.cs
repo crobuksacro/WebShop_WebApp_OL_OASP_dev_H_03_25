@@ -15,6 +15,8 @@ namespace WebShop_WebApp.Mapping
             CreateMap<ProductCategory, ProductCategoryViewModel>();
             CreateMap<ProductCategoryUpdateBinding, ProductCategory>();
             CreateMap<ProductCategoryBinding, ProductCategory>();
+
+            CreateMap<QuantityType, QuantityTypeViewModel>();
         }
     }
 }

@@ -3,8 +3,8 @@
 3. Prilikom prikaza proizvoda, prikazati i tip količine
 
 4. Prilikom uređivanja proizvoda, omogućiti promjenu tipa količine
-5. 
-6. 
+5. Na Landing stranici, prikazati proizvode sa njihovim tipom količine, kategorijom i cijenom
+6. Prozivode koji nemaju dostupnu količinu, ne prikazivati na Landing stranici
 
 7. 
 8. 

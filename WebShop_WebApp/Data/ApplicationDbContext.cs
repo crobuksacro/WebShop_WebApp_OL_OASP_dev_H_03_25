@@ -78,6 +78,25 @@ namespace WebShop_WebApp.Data
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+           builder.Entity<QuantityType>().HasData(
+                new QuantityType { Id = 1, Name = "Dan", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 2, Name = "Mjesec", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 3, Name = "Godina", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 4, Name = "Komad", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 5, Name = "Kilogram", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 6, Name = "Gram", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 7, Name = "Litara", Created = DateTime.Now, Valid = true },
+                new QuantityType { Id = 8, Name = "Mililitar", Created = DateTime.Now, Valid = true }
+            );
+
+
+
+            base.OnModelCreating(builder);
+        }
+
+
         public DbSet<QuantityType> QuantityTypes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategorys { get; set; }

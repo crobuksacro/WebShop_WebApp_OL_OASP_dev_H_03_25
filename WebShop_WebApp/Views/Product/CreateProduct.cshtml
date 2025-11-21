@@ -1,7 +1,10 @@
-﻿@model WebShop_Shared.Model.Binding.ProductBinding
-
+﻿@using WebShop_WebApp.Services.Interfaces
+@model WebShop_Shared.Model.Binding.ProductBinding
+@inject IProductService productService
 @{
     ViewData["Title"] = "CreateProduct";
+
+    // var quantityTypes = await productService.GetAllQuantityTypes();
 }
 
 <h1>CreateProduct</h1>
@@ -37,16 +40,40 @@
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="QuantityTypeId" class="control-label"></label>
+@*                 <select asp-for="QuantityTypeId" class="form-control" asp-items="@(new SelectList(Model.QuantityTypes, "Id", "Name"))">
+                    <option value="">Odaberi Mjernu jedinicu</option>
+                </select> *@
+
+                <select name="QuantityTypeId" class="form-select">
+            
+                    <optgroup label="Mjerne jedinice">
+                    @if (Model.QuantityTypes != null)
+                    {
+                        foreach (var type in Model.QuantityTypes)
+                        {
+                            <option value="@type.Id">@type.Name</option>
+                        }
+                    }
+                    </optgroup>
+                </select>
+
+                <span asp-validation-for="QuantityTypeId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group mt-4">
+                @Html.ActionLink("Nazad", "Category", new { Id = Model.ProductCategoryId }, new { @class = "btn btn-primary" })
+                <input type="submit" value="Spremi" class="btn btn-primary" />
+
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    @Html.ActionLink("Nazad", "Category", new { Id = Model.ProductCategoryId }, new { @class = "btn btn-primary mb-3" })
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

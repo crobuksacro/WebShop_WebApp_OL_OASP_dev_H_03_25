@@ -1,12 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebShop_Shared.Model.Binding;
+﻿using WebShop_Shared.Model.Binding;
 using WebShop_Shared.Model.ViewModel;
-using WebShop_WebApp.Models.Dbo;
 
 namespace WebShop_WebApp.Services.Interfaces
 {
     public interface IProductService
     {
+        /// <summary>
+        /// Gets all quantity types from the database.
+        /// </summary>
+        /// <param name="valid"></param>
+        /// <returns></returns>
+        Task<List<QuantityTypeViewModel>> GetAllQuantityTypes(bool? valid = null);
         /// <summary>
         /// Adds a new product to the database.
         /// </summary>
@@ -42,7 +46,7 @@ namespace WebShop_WebApp.Services.Interfaces
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-         Task<ProductCategoryViewModel> AddProductCategory(ProductCategoryBinding model);
+        Task<ProductCategoryViewModel> AddProductCategory(ProductCategoryBinding model);
         /// <summary>
         /// Gets all ProductCategorys from the database.
         /// </summary>
