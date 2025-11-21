@@ -1,6 +1,8 @@
-﻿namespace WebShop_Shared.Model.ViewModel
+﻿using WebShop_Shared.Model.Base;
+
+namespace WebShop_Shared.Model.ViewModel
 {
-    public class ProductViewModel
+    public class ProductViewModel: ProductBase
     {
         public long Id { get; set; }
     }

@@ -146,6 +146,7 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<ProductCategoryViewModel?> GetByIdProductCategory(long id)
         {
             var ProductCategory = await _context.ProductCategorys
+                .Include(y=>y.Products)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (ProductCategory == null)
             {

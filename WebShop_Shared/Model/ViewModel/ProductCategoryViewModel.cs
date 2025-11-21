@@ -5,5 +5,6 @@ namespace WebShop_Shared.Model.ViewModel
     public class ProductCategoryViewModel: ProductCategoryBase
     {
         public long Id { get; set; }
+        public List<ProductViewModel>? Products { get; set; }
     }
 }
