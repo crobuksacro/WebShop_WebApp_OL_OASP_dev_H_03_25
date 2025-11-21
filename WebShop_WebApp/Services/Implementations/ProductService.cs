@@ -97,6 +97,7 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<ProductViewModel> Delete(long id)
         {
             var dbo = await _context.Products
+                .Include(p => p.ProductCategory)
                 .FirstOrDefaultAsync(p => p.Id == id);
             dbo!.Valid = false;
             await _context.SaveChangesAsync();
@@ -146,7 +147,7 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<ProductCategoryViewModel?> GetByIdProductCategory(long id)
         {
             var ProductCategory = await _context.ProductCategorys
-                .Include(y=>y.Products)
+                .Include(y=>y.Products.Where(y=>y.Valid))
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (ProductCategory == null)
             {

@@ -61,5 +61,51 @@ namespace WebShop_WebApp.Controllers
             return RedirectToAction("Categorys");
         }
 
+
+
+        public async Task<IActionResult> EditProduct(long id)
+        {
+            var product = await _productService.GetById(id);
+            return View(product);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductUpdateBinding model)
+        {
+            var product = await _productService.Update(model);
+            return RedirectToAction("Products");
+        }
+
+
+        public async Task<IActionResult> DetailsProduct(long id)
+        {
+            var product = await _productService.GetById(id);
+            return View(product);
+        }
+
+        public async Task<IActionResult> DeleteProduct(long id)
+        {
+            var product = await _productService.Delete(id);
+            return RedirectToAction("Category", new { id = product.ProductCategoryId });
+        }
+
+
+      
+        public async Task<IActionResult> CreateProduct(long categoryId)
+        {
+            return View(new ProductBinding
+            {
+                ProductCategoryId = categoryId
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(ProductBinding model)
+        {
+            var product = await _productService.Add(model);
+            return RedirectToAction("Category", new { id = product.ProductCategoryId });
+        }
+
     }
 }
