@@ -3,18 +3,12 @@ using WebShop_Shared.Model.Interfaces;
 
 namespace WebShop_WebApp.Models.Dbo
 {
-    public class Product:ProductBase,IBaseTableAtributes
+    public class QuantityType: QuantityTypeBase, IBaseTableAtributes
     {
         public long Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
         public bool Valid { get; set; }
-
-        public ProductCategory? ProductCategory { get; set; }
-        public long? ProductCategoryId { get; set; }
-
-        public QuantityType? QuantityType { get; set; }
-        public long? QuantityTypeId { get; set; }
-
+    
     }
 }

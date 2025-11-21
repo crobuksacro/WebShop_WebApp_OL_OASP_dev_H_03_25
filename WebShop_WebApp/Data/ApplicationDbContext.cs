@@ -78,7 +78,7 @@ namespace WebShop_WebApp.Data
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-
+        public DbSet<QuantityType> QuantityTypes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategorys { get; set; }
 
