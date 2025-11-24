@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using WebShop_Shared.Model.Binding;
 using WebShop_Shared.Model.ViewModel;
+using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Models.Dbo.ProductModels;
 
 namespace WebShop_WebApp.Mapping
 {
@@ -17,6 +19,7 @@ namespace WebShop_WebApp.Mapping
             CreateMap<ProductCategoryBinding, ProductCategory>();
 
             CreateMap<QuantityType, QuantityTypeViewModel>();
+            CreateMap<ApplicationUser, ApplicationUserViewModel>();
         }
     }
 }

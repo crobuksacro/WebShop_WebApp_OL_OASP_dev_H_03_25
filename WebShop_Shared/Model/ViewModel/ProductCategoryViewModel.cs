@@ -1,4 +1,4 @@
-﻿using WebShop_Shared.Model.Base;
+﻿using WebShop_Shared.Model.Base.ProductModels;
 
 namespace WebShop_Shared.Model.ViewModel
 {

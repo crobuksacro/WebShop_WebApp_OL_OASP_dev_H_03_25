@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebShop_Shared.Model.Binding;
 using WebShop_Shared.Model.ViewModel;
 using WebShop_WebApp.Data;
-using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Models.Dbo.ProductModels;
 using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Services.Implementations

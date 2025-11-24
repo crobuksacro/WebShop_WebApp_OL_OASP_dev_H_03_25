@@ -1,4 +1,4 @@
-﻿using WebShop_Shared.Model.Base;
+﻿using WebShop_Shared.Model.Base.ProductModels;
 using WebShop_Shared.Model.ViewModel;
 
 namespace WebShop_Shared.Model.Binding

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebShop_Shared.Model.Interfaces;
 using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Models.Dbo.OrderModels;
+using WebShop_WebApp.Models.Dbo.ProductModels;
 
 namespace WebShop_WebApp.Data
 {
@@ -81,16 +83,16 @@ namespace WebShop_WebApp.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-           builder.Entity<QuantityType>().HasData(
-                new QuantityType { Id = 1, Name = "Dan", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 2, Name = "Mjesec", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 3, Name = "Godina", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 4, Name = "Komad", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 5, Name = "Kilogram", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 6, Name = "Gram", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 7, Name = "Litara", Created = DateTime.Now, Valid = true },
-                new QuantityType { Id = 8, Name = "Mililitar", Created = DateTime.Now, Valid = true }
-            );
+            builder.Entity<QuantityType>().HasData(
+                 new QuantityType { Id = 1, Name = "Dan", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 2, Name = "Mjesec", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 3, Name = "Godina", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 4, Name = "Komad", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 5, Name = "Kilogram", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 6, Name = "Gram", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 7, Name = "Litara", Created = DateTime.Now, Valid = true },
+                 new QuantityType { Id = 8, Name = "Mililitar", Created = DateTime.Now, Valid = true }
+             );
 
 
 
@@ -103,5 +105,8 @@ namespace WebShop_WebApp.Data
         public DbSet<ProductCategory> ProductCategorys { get; set; }
         public DbSet<Address> Addresss { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
+
 }

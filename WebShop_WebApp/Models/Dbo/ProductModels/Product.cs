@@ -1,7 +1,7 @@
-﻿using WebShop_Shared.Model.Base;
+﻿using WebShop_Shared.Model.Base.ProductModels;
 using WebShop_Shared.Model.Interfaces;
 
-namespace WebShop_WebApp.Models.Dbo
+namespace WebShop_WebApp.Models.Dbo.ProductModels
 {
     public class Product:ProductBase,IBaseTableAtributes
     {

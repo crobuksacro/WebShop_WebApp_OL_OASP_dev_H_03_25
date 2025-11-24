@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace WebShop_Shared.Model.Base
+namespace WebShop_Shared.Model.Base.ProductModels
 {
     public abstract class ProductCategoryBase
     {
