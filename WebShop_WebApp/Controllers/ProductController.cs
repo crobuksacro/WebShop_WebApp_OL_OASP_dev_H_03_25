@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebShop_Shared.Model.Binding;
+using WebShop_Shared.Model.Dto;
 using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Controllers
 {
+
+
+    [Authorize(Roles = Roles.Admin)]
     public class ProductController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -46,7 +51,7 @@ namespace WebShop_WebApp.Controllers
             return View(category);
         }
 
-
+        
         [HttpPost]
         public async Task<IActionResult> EditCategory(ProductCategoryUpdateBinding model)
         {

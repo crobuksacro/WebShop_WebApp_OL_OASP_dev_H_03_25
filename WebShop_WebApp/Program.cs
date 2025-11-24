@@ -44,6 +44,9 @@ namespace WebShop_WebApp
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
+
+
 
             #region AutoMapper Configuration
             var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
@@ -82,6 +85,9 @@ namespace WebShop_WebApp
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+            var identitySetup = app.Services.GetRequiredService<IIdentitySetup>();
+
+
 
             app.Run();
         }
