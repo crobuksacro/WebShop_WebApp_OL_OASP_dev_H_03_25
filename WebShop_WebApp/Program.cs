@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Mapping;
+using WebShop_WebApp.Models.Dbo;
 using WebShop_WebApp.Services.Implementations;
 using WebShop_WebApp.Services.Interfaces;
 
@@ -20,8 +21,27 @@ namespace WebShop_WebApp
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            #region Identity Configuration
+
+                    builder.Services.AddDefaultIdentity<ApplicationUser>(
+                 options => {
+                     options.SignIn.RequireConfirmedAccount = true;
+                     options.Password.RequiredLength = 6;
+                     options.Password.RequiredUniqueChars = 0;
+                     options.Password.RequireLowercase = false;
+                     options.Password.RequireUppercase = false;
+                     options.Password.RequireNonAlphanumeric = false;
+                     options.Password.RequireDigit = false;
+                 }
+
+
+                 )
+                 .AddRoles<IdentityRole>()
+                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            #endregion
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IProductService, ProductService>();
 
