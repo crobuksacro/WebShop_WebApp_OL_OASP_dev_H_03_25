@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebShop_Shared.Model.Binding;
+using WebShop_Shared.Model.Binding.ProductModels;
 using WebShop_Shared.Model.Dto;
 using WebShop_WebApp.Services.Interfaces;
 

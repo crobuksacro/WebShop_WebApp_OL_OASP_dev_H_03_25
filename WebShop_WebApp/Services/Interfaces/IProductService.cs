@@ -1,5 +1,5 @@
-﻿using WebShop_Shared.Model.Binding;
-using WebShop_Shared.Model.ViewModel;
+﻿using WebShop_Shared.Model.Binding.ProductModels;
+using WebShop_Shared.Model.ViewModel.ProductModels;
 
 namespace WebShop_WebApp.Services.Interfaces
 {

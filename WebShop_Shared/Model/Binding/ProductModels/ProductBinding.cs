@@ -1,7 +1,7 @@
 ﻿using WebShop_Shared.Model.Base.ProductModels;
-using WebShop_Shared.Model.ViewModel;
+using WebShop_Shared.Model.ViewModel.ProductModels;
 
-namespace WebShop_Shared.Model.Binding
+namespace WebShop_Shared.Model.Binding.ProductModels
 {
     public class ProductBinding : ProductBase
     {

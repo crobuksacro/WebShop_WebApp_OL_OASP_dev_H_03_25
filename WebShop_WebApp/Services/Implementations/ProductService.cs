@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using WebShop_Shared.Model.Binding;
-using WebShop_Shared.Model.ViewModel;
+using WebShop_Shared.Model.Binding.ProductModels;
+using WebShop_Shared.Model.ViewModel.ProductModels;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Models.Dbo.ProductModels;
 using WebShop_WebApp.Services.Interfaces;

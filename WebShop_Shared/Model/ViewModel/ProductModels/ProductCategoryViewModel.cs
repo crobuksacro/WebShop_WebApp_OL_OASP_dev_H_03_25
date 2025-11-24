@@ -1,6 +1,6 @@
 ﻿using WebShop_Shared.Model.Base.ProductModels;
 
-namespace WebShop_Shared.Model.ViewModel
+namespace WebShop_Shared.Model.ViewModel.ProductModels
 {
     public class ProductCategoryViewModel: ProductCategoryBase
     {

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using WebShop_Shared.Model.Binding;
-using WebShop_Shared.Model.ViewModel;
+using WebShop_Shared.Model.Binding.Common;
+using WebShop_Shared.Model.Binding.ProductModels;
+using WebShop_Shared.Model.ViewModel.Common;
+using WebShop_Shared.Model.ViewModel.ProductModels;
 using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Models.Dbo;
 using WebShop_WebApp.Models.Dbo.ProductModels;
@@ -20,6 +22,8 @@ namespace WebShop_WebApp.Mapping
 
             CreateMap<QuantityType, QuantityTypeViewModel>();
             CreateMap<ApplicationUser, ApplicationUserViewModel>();
+            CreateMap<AddressBinding, Address>();
+            CreateMap<Address, AddressViewModel>();
         }
     }
 }
