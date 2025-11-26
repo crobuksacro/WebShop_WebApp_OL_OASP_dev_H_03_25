@@ -24,7 +24,23 @@ namespace WebShop_WebApp.Services.Implementations
             _mapper = mapper;
             _userManager = userManager;
         }
+        /// <summary>
+        /// Updates the status of an existing order
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> UpdateOrderStatus(OrderStatusUpdateBinding model)
+        {
+            var dbo = await _dbo.Orders.FirstOrDefaultAsync(y => y.Id == model.OrderId);
+            if (dbo == null)
+            {
+                return null;
+            }
 
+            dbo.OrderStatus = model.OrderStatus;
+            await _dbo.SaveChangesAsync();
+            return _mapper.Map<OrderViewModel>(dbo);
+        }
         /// <summary>
         /// Adds a new order to the database
         /// </summary>

@@ -1,0 +1,5 @@
+﻿1. Napravite pregled naruidžbi za administratore
+2. Napravite pregled naruidžbi za kupce
+3. Unutar navigacije dodajte linkove za pristup narudžbama(admin/kupac)
+4. 
+5. 
