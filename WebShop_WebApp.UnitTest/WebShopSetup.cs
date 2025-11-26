@@ -7,6 +7,7 @@ using Moq;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Mapping;
 using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Models.Dbo.ProductModels;
 using WebShop_WebApp.Services.Implementations;
 using WebShop_WebApp.Services.Interfaces;
 
@@ -17,7 +18,7 @@ namespace WebShop_WebApp.UnitTest
         protected IMapper Mapper { get; private set; }
         protected ApplicationDbContext InMemoryDbContext;
         protected readonly Mock<UserManager<ApplicationUser>> UserManager;
-
+        protected List<QuantityType> QuantityTypes;
 
 
         public WebShopSetup()
@@ -33,7 +34,20 @@ namespace WebShop_WebApp.UnitTest
             }, loggerFactory);
 
             Mapper = configuration.CreateMapper();
+            SeedQuantityTypes();
 
+        }
+
+        protected void SeedQuantityTypes()
+        {
+            QuantityTypes = new List<QuantityType>
+            {
+                new QuantityType { Id = 1, Name = "Piece", Created = DateTime.Now, Description = "A single item", Valid = true },
+                new QuantityType { Id = 2, Name = "Kilogram", Created = DateTime.Now, Description = "Weight in kilograms", Valid = true },
+                new QuantityType { Id = 3, Name = "Liter", Created = DateTime.Now, Description = "Volume in liters", Valid = true }
+            };
+            InMemoryDbContext.QuantityTypes.AddRange(QuantityTypes);
+            InMemoryDbContext.SaveChanges();
         }
 
 

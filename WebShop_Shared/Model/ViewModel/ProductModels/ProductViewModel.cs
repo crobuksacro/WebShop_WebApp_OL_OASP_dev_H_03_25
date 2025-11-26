@@ -16,5 +16,6 @@ namespace WebShop_Shared.Model.ViewModel.ProductModels
         /// Ako nudimo mogučnost odabira, onda koristimo ovaj popis
         /// </summary>
         public List<QuantityTypeViewModel> QuantityTypes { get; set; }
+        public bool Valid { get; set; }
     }
 }
