@@ -45,7 +45,7 @@ namespace WebShop_WebApp
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
-
+            builder.Services.AddSingleton<IOrderService, OrderService>();
 
 
             #region AutoMapper Configuration

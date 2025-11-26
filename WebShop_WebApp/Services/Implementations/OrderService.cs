@@ -1,23 +1,28 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Dto;
 using WebShop_Shared.Model.ViewModel.OrderModels;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Models.Dbo;
 using WebShop_WebApp.Models.Dbo.OrderModels;
+using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Services.Implementations
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private readonly ApplicationDbContext _dbo;
         private readonly IMapper _mapper;
+        private UserManager<ApplicationUser> _userManager;
 
-
-        public OrderService(ApplicationDbContext context, IMapper mapper)
+        public OrderService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             _dbo = context;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -29,13 +34,13 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<OrderViewModel> AddOrder(OrderBinding model, ApplicationUser buyer)
         {
             var dbo = _mapper.Map<Order>(model);
-            var productItems = _dbo.Products.Where(y=> model.OrderItems.Select(x=>x.ProductId).Contains(y.Id)).ToList();
+            var productItems = _dbo.Products.Where(y => model.OrderItems.Select(x => x.ProductId).Contains(y.Id)).ToList();
 
             foreach (var product in dbo.OrderItems)
             {
-        
+
                 var target = productItems.FirstOrDefault(x => x.Id == product.ProductId);
-                if(target != null)
+                if (target != null)
                 {
                     target.Quantity -= product.Quantity;
                     product.Price = target.Price;
@@ -48,9 +53,66 @@ namespace WebShop_WebApp.Services.Implementations
             dbo.CalculateTotal();
 
             _dbo.Orders.Add(dbo);
-            await  _dbo.SaveChangesAsync();
+            await _dbo.SaveChangesAsync();
             return _mapper.Map<OrderViewModel>(dbo);
         }
+        /// <summary>
+        /// Gets orders based on user role
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<OrderViewModel>> GetOrders(ClaimsPrincipal user)
+        {
+            var applicationUser = await _userManager.GetUserAsync(user);
+            var role = await _userManager.GetRolesAsync(applicationUser);
+
+            switch (role[0])
+            {
+                case Roles.Admin:
+                    return await GetOrders();
+                case Roles.Buyer:
+                    return await GetOrders(applicationUser);
+                default:
+                    throw new NotImplementedException("Role not implemented");
+            }
+
+        }
+
+
+        /// <summary>
+        /// Gets all orders from the database
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<OrderViewModel>> GetOrders()
+        {
+            var dbo = await _dbo.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .Include(y => y.OrderAddress)
+                .ToListAsync();
+
+            return _mapper.Map<List<OrderViewModel>>(dbo);
+        }
+
+
+        /// <summary>
+        /// gets all orders for a specific buyer
+        /// </summary>
+        /// <param name="buyer"></param>
+        /// <returns></returns>
+        public async Task<List<OrderViewModel>> GetOrders(ApplicationUser buyer)
+        {
+            var dbo = await _dbo.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .Include(y => y.OrderAddress)
+                .Where(y => y.BuyerId == buyer.Id)
+                .ToListAsync();
+
+            return _mapper.Map<List<OrderViewModel>>(dbo);
+        }
+
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using WebShop_Shared.Model.Binding.AccountModels;
 using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Data;
