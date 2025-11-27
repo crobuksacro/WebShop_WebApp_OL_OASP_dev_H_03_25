@@ -1,7 +1,7 @@
 ﻿using WebShop_Shared.Model.Binding.Common;
 using WebShop_Shared.Model.Binding.OrderModels;
-using WebShop_Shared.Model.Binding.ProductModels;
 using WebShop_Shared.Model.Dto;
+using WebShop_Shared.Model.ViewModel.OrderModels;
 using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.UnitTest
@@ -18,7 +18,42 @@ namespace WebShop_WebApp.UnitTest
         [Fact]
         public async Task AddOrder_AddsOrderToDb_ReturnsAddedOrderAsViewModel()
         {
+            OrderViewModel result = await AddOrder();
+            Assert.NotNull(result);
+            Assert.Equal(OrderStatus.Pending, result.OrderStatus);
+        }
 
+        [Fact]
+        public async Task GetAllOrders_ReturnsListOfOrders()
+        {
+            await AddOrder();
+            var result = await orderService.GetOrders(Buyer);
+            Assert.NotNull(result);
+            Assert.IsType<List<OrderViewModel>>(result);
+            Assert.Single(result);
+            Assert.Equal(OrderStatus.Pending, result[0].OrderStatus);
+        }
+
+        [Fact]
+        public async Task UpdateOrderStatus_UpdatesOrderStatusToNewStastus_ReturnsOrderViewModel()
+        {
+
+
+            var addedOrder = await AddOrder();
+            var orderStatusUpdateBinding = new OrderStatusUpdateBinding
+            {
+                OrderId = addedOrder.Id,
+                OrderStatus = OrderStatus.Shipped
+            };
+            var result = await orderService.UpdateOrderStatus(orderStatusUpdateBinding);
+            Assert.NotNull(result);
+            Assert.IsType<OrderViewModel>(result);
+            Assert.Equal(OrderStatus.Shipped, result.OrderStatus);
+        }
+
+
+        private async Task<OrderViewModel> AddOrder()
+        {
             var products = InMemoryDbContext.Products.ToList();
 
 
@@ -36,7 +71,7 @@ namespace WebShop_WebApp.UnitTest
                     {
                         ProductId = products[0].Id,
                         Quantity = 1
-                        
+
                     }
                 },
                 OrderAddress = new AddressBinding
@@ -49,15 +84,10 @@ namespace WebShop_WebApp.UnitTest
                 }
 
             };
-
-
-
             var result = await orderService.AddOrder(orderBinding, Buyer);
-
-
-            Assert.NotNull(result);
-            Assert.Equal(OrderStatus.Pending, result.OrderStatus);
+            return result;
         }
+
 
     }
 }

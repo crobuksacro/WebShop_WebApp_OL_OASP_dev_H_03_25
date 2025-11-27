@@ -24,33 +24,38 @@ namespace WebShop_WebApp
 
             #region Identity Configuration
 
-                    builder.Services.AddDefaultIdentity<ApplicationUser>(
-                 options => {
-                     options.SignIn.RequireConfirmedAccount = true;
-                     options.Password.RequiredLength = 6;
-                     options.Password.RequiredUniqueChars = 0;
-                     options.Password.RequireLowercase = false;
-                     options.Password.RequireUppercase = false;
-                     options.Password.RequireNonAlphanumeric = false;
-                     options.Password.RequireDigit = false;
-                 }
+            builder.Services.AddDefaultIdentity<ApplicationUser>(
+         options =>
+         {
+             options.SignIn.RequireConfirmedAccount = true;
+             options.Password.RequiredLength = 6;
+             options.Password.RequiredUniqueChars = 0;
+             options.Password.RequireLowercase = false;
+             options.Password.RequireUppercase = false;
+             options.Password.RequireNonAlphanumeric = false;
+             options.Password.RequireDigit = false;
+         }
 
 
-                 )
-                 .AddRoles<IdentityRole>()
-                 .AddEntityFrameworkStores<ApplicationDbContext>();
+         )
+         .AddRoles<IdentityRole>()
+         .AddEntityFrameworkStores<ApplicationDbContext>();
 
             #endregion
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+
             builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
-            builder.Services.AddSingleton<IOrderService, OrderService>();
+
 
 
             #region AutoMapper Configuration
             var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
-            var configuration = new MapperConfiguration(cfg => {
+            var configuration = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<MappingProfile>();
             }, loggerFactory);
 

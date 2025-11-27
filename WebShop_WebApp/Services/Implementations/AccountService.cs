@@ -4,10 +4,11 @@ using WebShop_Shared.Model.Binding.AccountModels;
 using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Services.Implementations
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private UserManager<ApplicationUser> userManager;
         private ApplicationDbContext db;
