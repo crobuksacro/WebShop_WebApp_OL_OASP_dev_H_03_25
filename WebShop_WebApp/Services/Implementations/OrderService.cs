@@ -50,17 +50,20 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<OrderViewModel> AddOrder(OrderBinding model, ApplicationUser buyer)
         {
             var dbo = _mapper.Map<Order>(model);
+            dbo.OrderItems = new List<OrderItem>();
+
             var productItems = _dbo.Products.Where(y => model.OrderItems.Select(x => x.ProductId).Contains(y.Id)).ToList();
 
-            foreach (var product in dbo.OrderItems)
+            foreach (var product in model.OrderItems)
             {
 
                 var target = productItems.FirstOrDefault(x => x.Id == product.ProductId);
-                if (target != null)
+                dbo.OrderItems.Add(new OrderItem
                 {
-                    target.Quantity -= product.Quantity;
-                    product.Price = target.Price;
-                }
+                    ProductId = product.ProductId,
+                    Quantity = product.Quantity,
+                    Price = target != null ? target.Price : 0
+                });
 
             }
 
@@ -94,8 +97,6 @@ namespace WebShop_WebApp.Services.Implementations
             }
 
         }
-
-
         /// <summary>
         /// Gets all orders from the database
         /// </summary>
@@ -110,8 +111,6 @@ namespace WebShop_WebApp.Services.Implementations
 
             return _mapper.Map<List<OrderViewModel>>(dbo);
         }
-
-
         /// <summary>
         /// gets all orders for a specific buyer
         /// </summary>

@@ -19,6 +19,8 @@ namespace WebShop_WebApp.UnitTest
         protected ApplicationDbContext InMemoryDbContext;
         protected readonly Mock<UserManager<ApplicationUser>> UserManager;
         protected List<QuantityType> QuantityTypes;
+        protected readonly ApplicationUser Buyer;
+        protected readonly List<ProductCategory> ProductCategories;
 
 
         public WebShopSetup()
@@ -35,7 +37,8 @@ namespace WebShop_WebApp.UnitTest
 
             Mapper = configuration.CreateMapper();
             SeedQuantityTypes();
-
+            Buyer = GetApplicationUser();
+            ProductCategories = GetProductCategories(20);
         }
 
         protected void SeedQuantityTypes()
@@ -53,11 +56,21 @@ namespace WebShop_WebApp.UnitTest
 
         protected IProductService GetProductService(ApplicationDbContext? db = null)
         {
-            if(db != null)
+            if (db != null)
             {
                 return new ProductService(db, Mapper);
             }
             return new ProductService(InMemoryDbContext, Mapper);
+        }
+
+
+        protected IOrderService GetOrderService(ApplicationDbContext? db = null)
+        {
+            if (db != null)
+            {
+                return new OrderService(db, Mapper, UserManager.Object);
+            }
+            return new OrderService(InMemoryDbContext, Mapper, UserManager.Object);
         }
 
         private void SetupInMemoryContext()
@@ -68,5 +81,108 @@ namespace WebShop_WebApp.UnitTest
                             .Options;
             InMemoryDbContext = new ApplicationDbContext(inMemoryOptions);
         }
+
+
+        protected ApplicationUser GetApplicationUser()
+        {
+            var applicationUser = new ApplicationUser
+            {
+                UserName = "testuser",
+                Email = $"{Guid.NewGuid()}@example.com",
+                FirstName = "Test",
+                LastName = "User",
+                PhoneNumber = "1234567890",
+                EmailConfirmed = true,
+                Address = new Address
+                {
+                    Street = "123 Test St",
+                    Number = "1A",
+                    City = "Testville",
+                    Country = "Testland"
+                },
+
+            };
+
+            InMemoryDbContext.Users.Add(applicationUser);
+            InMemoryDbContext.SaveChanges();
+            return applicationUser;
+
+        }
+
+
+        protected List<ProductCategory> GetProductCategories(int? number = null)
+        {
+            if (!number.HasValue)
+            {
+                    var productCategories = new List<ProductCategory>
+                {
+                    new ProductCategory { Name = "Electronics", Description = "Electronic devices and gadgets", Products = GetProducts(false,3) },
+                    new ProductCategory { Name = "Books", Description = "Various kinds of books", Products = GetProducts(false, 2) },
+                    new ProductCategory { Name = "Clothing", Description = "Apparel and accessories", Products = GetProducts(false, 1) }
+                };
+                    InMemoryDbContext.ProductCategorys.AddRange(productCategories);
+                    InMemoryDbContext.SaveChanges();
+                    return productCategories;
+            }
+
+
+
+
+            List<ProductCategory> categories = new List<ProductCategory>();
+            Random random = new Random();
+
+            for (int i = 0; i < number.Value; i++)
+            {
+                var category = new ProductCategory
+                {
+                    Name = $"Category {i + 1}",
+                    Description = $"Description for Category {i + 1}",
+                    Products = GetProducts(false, random.Next(1, i + 2)),
+
+                };
+                categories.Add(category);
+            }
+
+            InMemoryDbContext.ProductCategorys.AddRange(categories);
+            InMemoryDbContext.SaveChanges();
+            return categories;
+
+        }
+
+
+        public List<Product> GetProducts(bool saveInDb, int number = 1)
+        {
+            List<Product> products = new List<Product>();
+            Random random = new Random();
+
+
+            for (int i = 0; i < number; i++)
+            {
+                var product = new Product
+                {
+                    Name = $"Product {i + 1}",
+                    Description = $"Description for Product {i + 1}",
+                    Price = 10.0m * (i + 1),
+                    QuantityTypeId = QuantityTypes[random.Next(QuantityTypes.Count)].Id,
+                    Valid = true,
+                    Quantity = 100,
+                    Created = DateTime.Now
+                };
+                products.Add(product);
+            }
+
+            if (saveInDb)
+            {
+                InMemoryDbContext.Products.AddRange(products);
+                InMemoryDbContext.SaveChanges();
+            }
+
+
+            return products;
+
+        }
+
+
+      
     }
 }

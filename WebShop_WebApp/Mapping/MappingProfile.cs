@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using WebShop_Shared.Model.Binding.Common;
+using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Binding.ProductModels;
 using WebShop_Shared.Model.ViewModel.Common;
+using WebShop_Shared.Model.ViewModel.OrderModels;
 using WebShop_Shared.Model.ViewModel.ProductModels;
 using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Models.Dbo.OrderModels;
 using WebShop_WebApp.Models.Dbo.ProductModels;
 
 namespace WebShop_WebApp.Mapping
@@ -13,6 +16,11 @@ namespace WebShop_WebApp.Mapping
     {
         public MappingProfile()
         {
+            CreateMap<OrderBinding, Order>()
+                .ForMember(dest => dest.OrderItems, opt => opt.Ignore());
+            CreateMap<Order, OrderViewModel>();
+            CreateMap<OrderItem, OrderItemViewModel>();
+
             CreateMap<Product, ProductViewModel>();
             CreateMap<ProductUpdateBinding, Product>();
             CreateMap<ProductBinding, Product>();
