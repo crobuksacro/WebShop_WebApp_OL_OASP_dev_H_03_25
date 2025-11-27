@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebShop_Shared.Model.Binding.AccountModels;
 using WebShop_Shared.Model.Dto;
-using WebShop_WebApp.Services.Implementations;
 using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Controllers

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebShop_Shared.Model.Dto;
 using WebShop_WebApp.Models;
 using WebShop_WebApp.Services.Interfaces;
 
@@ -19,6 +20,14 @@ namespace WebShop_WebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if(User != null)
+            {
+                if (User.IsInRole(Roles.Buyer))
+                {
+                    return RedirectToAction("Index", "Buyer");
+                }
+            }
+
             var products = await _productService.GetAll();
             return View(products);
         }
