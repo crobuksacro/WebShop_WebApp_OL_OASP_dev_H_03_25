@@ -21,5 +21,12 @@ namespace WebShop_WebApp.Controllers
             return View(categories);
         }
 
+
+        public async Task<IActionResult> Category(long id)
+        {
+            var category = await _productService.GetByIdProductCategory(id);
+            return View(category);
+        }
+
     }
 }
