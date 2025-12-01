@@ -51,6 +51,14 @@ namespace WebShop_WebApp
             builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
 
 
+            // Add session support
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
 
             #region AutoMapper Configuration
             var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
@@ -85,6 +93,10 @@ namespace WebShop_WebApp
             app.UseRouting();
 
             app.UseAuthorization();
+
+
+            // Add session middleware
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

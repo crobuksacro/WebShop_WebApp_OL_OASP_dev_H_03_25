@@ -87,6 +87,8 @@
         </table>
     </div>
 
+    <input type="button" class="btn btn-success" id="btn-order-final" value="Dodaj u košaricu" />
+
 </div>
 
 
@@ -144,8 +146,6 @@
     let currentButton; //Podaci koji su dosli sa odabirom gumba "Odaberi" na listi proizvoda
     const orderItems = {}; //Objekt za pohranu proizvoda
 
-    var test = 0;
-
 
     //Prikazi odabrani prouzvod
     function AddItemToShoppingChart(e){
@@ -166,12 +166,9 @@
         $('#order-modal').modal('show');
 
     }
-
     function CloseModal(){
          $('#order-modal').modal('hide');
     }
-
-
     function ConfirmOrder()
     {
                                 //$('#ordered-quantity')
@@ -196,6 +193,9 @@
 
 
             orderItems[productId] = orderQuantity;
+
+            console.log(orderItems);
+
             CloseModal();
 
         }
@@ -204,5 +204,44 @@
         // alert("Narucena kolicina: " + orderQuantity + ", za proizvod"+productId);
 
     }
+
+
+    document.getElementById('btn-order-final').addEventListener("click", function(){
+
+        let orderItemsArray = [];
+
+        for (const [productId, quantity] of Object.entries(orderItems)) {
+            orderItemsArray.push({
+                ProductId: productId,
+                Quantity: quantity
+            });
+        }
+        
+                // Send the order items array to the server as JSON
+                fetch('/Buyer/AddToOrderItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderItemsArray)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            alert('Network response was not ok');
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        window.location.href = '/Buyer/Order';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+
+
+    });
 
 </script>

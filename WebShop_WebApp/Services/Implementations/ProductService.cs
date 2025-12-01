@@ -20,6 +20,8 @@ namespace WebShop_WebApp.Services.Implementations
         }
 
 
+
+
         /// <summary>
         /// Adds a new product to the database.
         /// </summary>
@@ -31,6 +33,18 @@ namespace WebShop_WebApp.Services.Implementations
             _context.Products.Add(dbo);
             await _context.SaveChangesAsync();
             return _mapper.Map<ProductViewModel>(dbo);
+        }
+
+        /// <summary>
+        /// Gets all products from the database by a list of IDs.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
+        public async Task<List<ProductViewModel>> GetAll(List<long> id)
+        {
+            var dbo = await _context.Products.Where(p => id.Contains(p.Id)).ToListAsync();
+            return _mapper.Map<List<ProductViewModel>>(dbo);
         }
 
 

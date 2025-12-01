@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using WebShop_Shared.Model.Binding.Common;
 using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Dto;
 using WebShop_WebApp.Services.Interfaces;
@@ -11,12 +13,14 @@ namespace WebShop_WebApp.Controllers
     {
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
+        private readonly IAccountService accountService;
+        public static string OrderItemSessionKey = "OrderItems";
 
-
-        public BuyerController(IProductService productService, IOrderService orderService)
+        public BuyerController(IProductService productService, IOrderService orderService, IAccountService accountService)
         {
             _productService = productService;
             _orderService = orderService;
+            this.accountService = accountService;
         }
 
         public async Task<IActionResult> Index()
@@ -32,11 +36,70 @@ namespace WebShop_WebApp.Controllers
             return View(category);
         }
 
+
+        public async Task<IActionResult> Order()
+        {
+            var sessionOrderItems = HttpContext.Session.GetString(OrderItemSessionKey);
+            List<OrderItemBinding> existingOrderItems = sessionOrderItems != null ?
+                JsonSerializer.Deserialize<List<OrderItemBinding>>(sessionOrderItems)!
+                : new List<OrderItemBinding>();
+
+            var userAddress = await accountService.GetUserAddress<AddressBinding>(User);
+
+            var response = new OrderBinding
+            {
+                OrderItems = existingOrderItems,
+                OrderAddress = userAddress
+            };
+
+
+            return View(response);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Order(OrderBinding model)
         {
             await _orderService.AddOrder(model, User);
             return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddToOrderItem([FromBody] List<OrderItemBinding> orderItems)
+        {
+            try
+            {
+                var sessionOrderItems = HttpContext.Session.GetString(OrderItemSessionKey);
+                List<OrderItemBinding> existingOrderItems = sessionOrderItems != null ?
+                    JsonSerializer.Deserialize<List<OrderItemBinding>>(sessionOrderItems)!
+                    : new List<OrderItemBinding>();
+
+                foreach (var newItem in orderItems)
+                {
+                    var existingItem = existingOrderItems
+                        .FirstOrDefault(oi => oi.ProductId == newItem.ProductId);
+
+                    if (existingItem != null)
+                    {
+                        existingItem.Quantity += newItem.Quantity;
+                    }
+                    else
+                    {
+                        existingOrderItems.Add(newItem);
+                    }
+                }
+
+
+                HttpContext.Session.SetString(OrderItemSessionKey, JsonSerializer.Serialize(existingOrderItems));
+                return Json(existingOrderItems);
+
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
 

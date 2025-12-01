@@ -6,6 +6,13 @@ namespace WebShop_WebApp.Services.Interfaces
     public interface IProductService
     {
         /// <summary>
+        /// Gets all products from the database by a list of IDs.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
+        Task<List<ProductViewModel>> GetAll(List<long> id);
+        /// <summary>
         /// Gets all quantity types from the database.
         /// </summary>
         /// <param name="valid"></param>

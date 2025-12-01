@@ -32,6 +32,11 @@ namespace WebShop_WebApp.Mapping
             CreateMap<ApplicationUser, ApplicationUserViewModel>();
             CreateMap<AddressBinding, Address>();
             CreateMap<Address, AddressViewModel>();
+            CreateMap<Address, AddressBinding>();
+
+
+            
+
         }
     }
 }

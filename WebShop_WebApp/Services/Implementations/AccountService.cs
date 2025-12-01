@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WebShop_Shared.Model.Binding.AccountModels;
+using WebShop_Shared.Model.ViewModel.Common;
 using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Models.Dbo;
@@ -23,6 +26,22 @@ namespace WebShop_WebApp.Services.Implementations
             this.mapper = mapper;
             this.signInManager = signInManager;
         }
+
+        /// <summary>
+        /// Gets the address of the specified user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<T> GetUserAddress<T>(ClaimsPrincipal user)
+        {
+            var applicationUser = await userManager.GetUserAsync(user);
+            var dbo = await db.Users
+                 .Include(y => y.Address)
+                 .FirstOrDefaultAsync(y => y.Id == applicationUser.Id);
+
+            return mapper.Map<T>(dbo.Address);
+        }
+
 
         /// <summary>
         /// Creates a new user with the specified role.

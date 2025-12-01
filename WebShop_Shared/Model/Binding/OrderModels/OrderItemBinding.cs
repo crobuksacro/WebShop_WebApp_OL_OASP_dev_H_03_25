@@ -3,6 +3,6 @@
     public class OrderItemBinding
     {
         public decimal Quantity { get; set; }
-        public long? ProductId { get; set; }
+        public long ProductId { get; set; }
     }
 }

@@ -1,0 +1,113 @@
+﻿@using WebShop_Shared.Model.Binding.OrderModels
+@using WebShop_WebApp.Services.Interfaces
+
+@model OrderBinding
+@inject IProductService ProductService
+
+@{
+    var productItems = await ProductService.GetAll(Model.OrderItems.Select(y => y.ProductId).ToList());
+    var rowCounter = 1;
+
+}
+
+<h1>Košarica</h1>
+
+
+@if (Model.OrderItems == null || !Model.OrderItems.Any())
+{
+    <span class="alert-info">Tvoja košarica je prazna, odaberi dodaj neki od naših</span>
+    <br />
+    <a asp-controller="Buyer" asp-action="Index" class="btn btn-primary mt-2">proizvoda!</a>
+}
+
+else
+{
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Order">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="OrderAddress.Street" class="control-label"></label>
+                    <input asp-for="OrderAddress.Street" class="form-control" />
+                    <span asp-validation-for="OrderAddress.Street" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrderAddress.Number" class="control-label"></label>
+                    <input asp-for="OrderAddress.Number" class="form-control" />
+                    <span asp-validation-for="OrderAddress.Number" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrderAddress.City" class="control-label"></label>
+                    <input asp-for="OrderAddress.City" class="form-control" />
+                    <span asp-validation-for="OrderAddress.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrderAddress.Country" class="control-label"></label>
+                    <input asp-for="OrderAddress.Country" class="form-control" />
+                    <span asp-validation-for="OrderAddress.Country" class="text-danger"></span>
+                </div>
+
+                <h4>Dodatno</h4>
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <input asp-for="Message" class="form-control" />
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Naziv</th>
+                            <th>Količina</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.OrderItems.Count; i++)
+                        {
+
+                            var prductItem = productItems.FirstOrDefault(x => x.Id == Model.OrderItems[i].ProductId);
+
+                            <tr>
+                                <td>@rowCounter</td>
+                                <td>@prductItem.Name</td>
+                                <td>
+                                    <input type="text" name="OrderItems[@i].Quantity" value="@Model.OrderItems[i].Quantity" min="1" class="form-control" />
+                                    <input type="hidden" name="OrderItems[@i].ProductId" value="@Model.OrderItems[i].ProductId" />
+                                </td>
+                            </tr>
+
+                            rowCounter++;
+                        }
+                    </tbody>
+
+                </table>
+
+
+
+
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
