@@ -8,6 +8,13 @@ namespace WebShop_WebApp.Services.Interfaces
     public interface IOrderService
     {
         /// <summary>
+        /// Adds a new order to the database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<OrderViewModel> AddOrder(OrderBinding model, ClaimsPrincipal user);
+        /// <summary>
         /// Updates the status of an existing order
         /// </summary>
         /// <param name="model"></param>

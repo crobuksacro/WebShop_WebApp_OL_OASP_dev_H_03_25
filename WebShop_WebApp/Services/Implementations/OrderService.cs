@@ -45,6 +45,20 @@ namespace WebShop_WebApp.Services.Implementations
         /// Adds a new order to the database
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> AddOrder(OrderBinding model, ClaimsPrincipal user)
+        {
+            var applicationUser = await _userManager.GetUserAsync(user);
+            return await AddOrder(model, applicationUser);
+
+        }
+
+
+        /// <summary>
+        /// Adds a new order to the database
+        /// </summary>
+        /// <param name="model"></param>
         /// <param name="buyer"></param>
         /// <returns></returns>
         public async Task<OrderViewModel> AddOrder(OrderBinding model, ApplicationUser buyer)
