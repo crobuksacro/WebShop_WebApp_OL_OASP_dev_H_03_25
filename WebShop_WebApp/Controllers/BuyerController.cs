@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using System.Threading.Tasks;
 using WebShop_Shared.Model.Binding.Common;
 using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Dto;
@@ -98,6 +99,19 @@ namespace WebShop_WebApp.Controllers
         {
             var orders = await _orderService.GetOrders(User);
             return View(orders);
+        }
+
+
+        public async Task<IActionResult> CanceleOrder(long id)
+        {
+
+            await _orderService.UpdateOrderStatus(new OrderStatusUpdateBinding
+            {
+                OrderId = id,
+                OrderStatus = OrderStatus.Canceled
+            }); 
+
+            return RedirectToAction("Orders");
         }
 
 
