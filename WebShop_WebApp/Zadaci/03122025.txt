@@ -1,5 +1,5 @@
 ﻿1. Napravite View za pregled nardzbi, sa prikazom svih proizvoda u narudzbi, prilagodjen kupcu
 2. Napravite ViewModel za prikaz narudzbi sa svim potrebnim podacima prilagodjen adminu
 3. Napravite za Rolu "Buyer" mogucnost otkazivanja narudzbi 
-4. 
+4. Napravite uredjivanje narudzbi za Rolu "Admin"
 5. 

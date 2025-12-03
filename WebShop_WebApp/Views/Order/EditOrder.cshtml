@@ -1,0 +1,82 @@
+﻿@using WebShop_Shared.Model.Dto
+@model WebShop_Shared.Model.ViewModel.OrderModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "OrderDetails";
+
+    var statusLabels = new Dictionary<OrderStatus, string>
+    {
+        { OrderStatus.Pending, "Narudžba je primljena" },
+        { OrderStatus.Processing, "Narudžba se obrađuje" },
+        { OrderStatus.Shipped, "Narudžba je poslana" },
+        { OrderStatus.Delivered, "Narudžba je isporučena" },
+        { OrderStatus.Canceled, "Narudžba je otkazana" },
+        { OrderStatus.Returned, "Narudžba je vraćena" },
+        { OrderStatus.Refunded, "Narudžba je refundirana" }
+    };
+}
+
+<h1>OrderDetails</h1>
+
+<h4>OrderViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="OrderDetails">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OrderStatus" class="control-label"></label>
+
+                <select asp-for="OrderStatus" class="form-control">
+                    @foreach (var status in Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>())
+                    {
+                        <option value="@status" selected="@(Model.OrderStatus == status)">
+                            @statusLabels[status]
+                        </option>
+                    }
+                </select>
+
+                <span asp-validation-for="OrderStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Orders">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

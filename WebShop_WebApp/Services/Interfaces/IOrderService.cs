@@ -48,5 +48,12 @@ namespace WebShop_WebApp.Services.Interfaces
         /// <param name="buyer"></param>
         /// <returns></returns>
         Task<List<OrderViewModel>> GetOrders(ApplicationUser buyer);
+        /// <summary>
+        /// Retrieves an order by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an  OrderViewModel representing
+        /// the order details, or null  if no order with the specified identifier is found.</returns>
+        Task<OrderViewModel> GetOrder(long id);
     }
 }

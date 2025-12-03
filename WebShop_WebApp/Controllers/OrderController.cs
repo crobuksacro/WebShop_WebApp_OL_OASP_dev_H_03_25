@@ -40,5 +40,13 @@ namespace WebShop_WebApp.Controllers
             return View(orders);
         }
 
+
+        public async Task<IActionResult> EditOrder(long id)
+        {
+            var order = await _orderService.GetOrder(id);
+            return View(order);
+        }
+
+
     }
 }
