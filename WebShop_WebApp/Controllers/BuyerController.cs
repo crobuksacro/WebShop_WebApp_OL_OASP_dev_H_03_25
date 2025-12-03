@@ -28,15 +28,11 @@ namespace WebShop_WebApp.Controllers
             var categories = await _productService.GetAllProductCategorys();
             return View(categories);
         }
-
-
         public async Task<IActionResult> Category(long id)
         {
             var category = await _productService.GetByIdProductCategory(id);
             return View(category);
         }
-
-
         public async Task<IActionResult> Order()
         {
             var sessionOrderItems = HttpContext.Session.GetString(OrderItemSessionKey);
@@ -55,16 +51,12 @@ namespace WebShop_WebApp.Controllers
 
             return View(response);
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Order(OrderBinding model)
         {
             await _orderService.AddOrder(model, User);
             return RedirectToAction("Index");
         }
-
-
         [HttpPost]
         public async Task<IActionResult> AddToOrderItem([FromBody] List<OrderItemBinding> orderItems)
         {
@@ -100,6 +92,12 @@ namespace WebShop_WebApp.Controllers
 
                 return BadRequest(ex.Message);
             }
+        }
+
+        public async Task<IActionResult> Orders()
+        {
+            var orders = await _orderService.GetOrders(User);
+            return View(orders);
         }
 
 

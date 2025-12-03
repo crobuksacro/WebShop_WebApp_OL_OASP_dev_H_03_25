@@ -33,6 +33,12 @@ namespace WebShop_WebApp.Controllers
             return View(orders);
         }
 
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Orders()
+        {
+            var orders = await _orderService.GetOrders();
+            return View(orders);
+        }
 
     }
 }

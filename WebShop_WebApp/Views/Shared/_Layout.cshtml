@@ -68,12 +68,19 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Buyer" asp-action="Index">Home</a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Buyer" asp-action="Orders">Narudzbe</a>
+                                    </li>
                                     break;
 
                                 case Roles.Admin:
 
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Categorys">Categories</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Orders">Narudzbe</a>
                                     </li>
                                     break;
 
