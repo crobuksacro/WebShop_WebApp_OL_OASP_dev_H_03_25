@@ -16,6 +16,20 @@ namespace WebShop_WebApp.UnitTest
 
 
         [Fact]
+        public async Task UpdateOrder_UpdatessOrderToDb_ReturnsUpdatedOrderAsViewModel()
+        {
+            OrderViewModel result = await AddOrder();
+            var input = Mapper.Map<OrderUpdateBinding>(result);
+            input.OrderStatus = OrderStatus.Shipped;
+            var updatedResult = await orderService.UpdateOrder(input);
+            Assert.NotNull(updatedResult);
+            Assert.Equal(result.Id, updatedResult.Id);
+            Assert.Equal(OrderStatus.Shipped, updatedResult.OrderStatus);
+        }
+
+
+
+        [Fact]
         public async Task AddOrder_AddsOrderToDb_ReturnsAddedOrderAsViewModel()
         {
             OrderViewModel result = await AddOrder();

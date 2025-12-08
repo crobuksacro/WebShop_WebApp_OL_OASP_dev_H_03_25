@@ -14,13 +14,13 @@ namespace WebShop_WebApp.Services.Implementations
 {
     public class OrderService : IOrderService
     {
-        private readonly ApplicationDbContext _dbo;
+        private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
         private UserManager<ApplicationUser> _userManager;
 
         public OrderService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
-            _dbo = context;
+            _db = context;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -31,14 +31,14 @@ namespace WebShop_WebApp.Services.Implementations
         /// <returns></returns>
         public async Task<OrderViewModel> UpdateOrderStatus(OrderStatusUpdateBinding model)
         {
-            var dbo = await _dbo.Orders.FirstOrDefaultAsync(y => y.Id == model.OrderId);
+            var dbo = await _db.Orders.FirstOrDefaultAsync(y => y.Id == model.OrderId);
             if (dbo == null)
             {
                 return null;
             }
 
             dbo.OrderStatus = model.OrderStatus;
-            await _dbo.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return _mapper.Map<OrderViewModel>(dbo);
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace WebShop_WebApp.Services.Implementations
             var dbo = _mapper.Map<Order>(model);
             dbo.OrderItems = new List<OrderItem>();
 
-            var productItems = _dbo.Products.Where(y => model.OrderItems.Select(x => x.ProductId).Contains(y.Id)).ToList();
+            var productItems = _db.Products.Where(y => model.OrderItems.Select(x => x.ProductId).Contains(y.Id)).ToList();
 
             foreach (var product in model.OrderItems)
             {
@@ -85,8 +85,8 @@ namespace WebShop_WebApp.Services.Implementations
             dbo.Buyer = buyer;
             dbo.CalculateTotal();
 
-            _dbo.Orders.Add(dbo);
-            await _dbo.SaveChangesAsync();
+            _db.Orders.Add(dbo);
+            await _db.SaveChangesAsync();
             return _mapper.Map<OrderViewModel>(dbo);
         }
         /// <summary>
@@ -117,7 +117,7 @@ namespace WebShop_WebApp.Services.Implementations
         /// <returns></returns>
         public async Task<List<OrderViewModel>> GetOrders()
         {
-            var dbo = await _dbo.Orders
+            var dbo = await _db.Orders
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
                 .Include(y => y.OrderAddress)
@@ -132,7 +132,7 @@ namespace WebShop_WebApp.Services.Implementations
         /// <returns></returns>
         public async Task<List<OrderViewModel>> GetOrders(ApplicationUser buyer)
         {
-            var dbo = await _dbo.Orders
+            var dbo = await _db.Orders
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
                 .Include(y => y.OrderAddress)
@@ -150,15 +150,35 @@ namespace WebShop_WebApp.Services.Implementations
         /// the order details, or null  if no order with the specified identifier is found.</returns>
         public async Task<OrderViewModel> GetOrder(long id)
         {
-            var dbo = await _dbo.Orders
+            var dbo = await _db.Orders
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
                 .Include(y => y.OrderAddress)
-                .FirstOrDefaultAsync(y=>y.Id == id);
+                .FirstOrDefaultAsync(y => y.Id == id);
 
 
             return _mapper.Map<OrderViewModel>(dbo);
         }
+
+
+        /// <summary>
+        /// Updates an existing order
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> UpdateOrder(OrderUpdateBinding model)
+        {
+            var dbo = await _db.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .Include(y => y.OrderAddress)
+                .FirstOrDefaultAsync(y => y.Id == model.Id);
+
+            _mapper.Map(model, dbo);
+            await _db.SaveChangesAsync();
+            return _mapper.Map<OrderViewModel>(dbo);
+        }
+
 
 
 

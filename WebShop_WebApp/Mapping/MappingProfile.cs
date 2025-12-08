@@ -18,8 +18,15 @@ namespace WebShop_WebApp.Mapping
         {
             CreateMap<OrderBinding, Order>()
                 .ForMember(dest => dest.OrderItems, opt => opt.Ignore());
+
+            CreateMap<OrderUpdateBinding, Order>();
+
             CreateMap<Order, OrderViewModel>();
             CreateMap<OrderItem, OrderItemViewModel>();
+            CreateMap<OrderItemViewModel, OrderItemUpdateBinding>();
+            CreateMap<OrderViewModel, OrderUpdateBinding>();
+
+            CreateMap<OrderItemUpdateBinding, OrderItem>();
 
             CreateMap<Product, ProductViewModel>();
             CreateMap<ProductUpdateBinding, Product>();
@@ -31,11 +38,15 @@ namespace WebShop_WebApp.Mapping
             CreateMap<QuantityType, QuantityTypeViewModel>();
             CreateMap<ApplicationUser, ApplicationUserViewModel>();
             CreateMap<AddressBinding, Address>();
+            CreateMap<AddressUpdateBinding, Address>();
             CreateMap<Address, AddressViewModel>();
             CreateMap<Address, AddressBinding>();
 
+            CreateMap<AddressViewModel, AddressUpdateBinding>();
 
-            
+
+
+
 
         }
     }
