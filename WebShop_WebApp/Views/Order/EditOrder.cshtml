@@ -39,7 +39,20 @@
                 <span asp-validation-for="Created" class="text-danger"></span>
             </div>
 
+      
+
             <div class="form-group">
+                <label  asp-for="Total" class="control-label"></label>
+                <input readonly asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" readonly class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-5">
                 <label asp-for="OrderStatus" class="control-label"></label>
 
                 <select asp-for="OrderStatus" class="form-control">
@@ -54,17 +67,33 @@
                 <span asp-validation-for="OrderStatus" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label  asp-for="Total" class="control-label"></label>
-                <input readonly asp-for="Total" class="form-control" />
-                <span asp-validation-for="Total" class="text-danger"></span>
-            </div>
+
+            <h5 class="mt-5 mb-1">Adresa isporuke</h5>
 
             <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" readonly class="form-control" />
-                <span asp-validation-for="Message" class="text-danger"></span>
+
+                <input asp-for="OrderAddress.Id" hidden class="form-control" />
+
+                <label asp-for="OrderAddress.Street" class="control-label"></label>
+                <input asp-for="OrderAddress.Street" class="form-control" />
+                <span asp-validation-for="OrderAddress.Street" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress.Number" class="control-label"></label>
+                <input asp-for="OrderAddress.Number" class="form-control" />
+                <span asp-validation-for="OrderAddress.Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress.City" class="control-label"></label>
+                <input asp-for="OrderAddress.City" class="form-control" />
+                <span asp-validation-for="OrderAddress.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress.Country" class="control-label"></label>
+                <input asp-for="OrderAddress.Country" class="form-control" />
+                <span asp-validation-for="OrderAddress.Country" class="text-danger"></span>
+            </div>
+
 
 
             @if (Model.OrderItems == null || !Model.OrderItems.Any())
@@ -75,7 +104,7 @@
 
             else
             {
-                <h3 class="mt-5 mb-1">Odabrani artikli</h3>
+                <h5 class="mt-5 mb-1">Odabrani artikli</h5>
                 <table class="table table-hover">
                     <thead>
                         <tr>
