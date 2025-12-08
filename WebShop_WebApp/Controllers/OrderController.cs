@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Dto;
 using WebShop_WebApp.Services.Interfaces;
 
@@ -40,13 +41,21 @@ namespace WebShop_WebApp.Controllers
             return View(orders);
         }
 
-
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> EditOrder(long id)
         {
             var order = await _orderService.GetOrder(id);
             return View(order);
         }
 
+
+        [HttpPost]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> EditOrder(OrderUpdateBinding model)
+        {
+            var order = await _orderService.UpdateOrder(model);
+            return RedirectToAction("Orders");
+        }
 
     }
 }

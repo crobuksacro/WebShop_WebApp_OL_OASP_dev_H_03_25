@@ -121,6 +121,7 @@ namespace WebShop_WebApp.Services.Implementations
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
                 .Include(y => y.OrderAddress)
+                .Where(y=>y.Valid)
                 .ToListAsync();
 
             return _mapper.Map<List<OrderViewModel>>(dbo);
@@ -199,8 +200,8 @@ namespace WebShop_WebApp.Services.Implementations
                 if (item.Id > 0)
                 {
                     var existing = dbo.OrderItems.First(x => x.Id == item.Id);
-                    existing.ProductId = item.Id;
                     existing.Quantity = item.Quantity;
+                    existing.Price = item.Price;
                 }
                 else
                 {

@@ -14,26 +14,28 @@
         { OrderStatus.Returned, "Narudžba je vraćena" },
         { OrderStatus.Refunded, "Narudžba je refundirana" }
     };
+
+    int rowCounter = 0;
 }
 
-<h1>OrderDetails</h1>
+<h1>Detalji narudžbe br. @Model.Id</h1>
 
-<h4>OrderViewModel</h4>
+
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="OrderDetails">
+    <div class="col-md-12">
+        <form asp-action="EditOrder">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
+                <input asp-for="Id" readonly class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
+                <input asp-for="Created" readonly class="form-control" />
                 <span asp-validation-for="Created" class="text-danger"></span>
             </div>
 
@@ -53,22 +55,80 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" class="form-control" />
+                <label  asp-for="Total" class="control-label"></label>
+                <input readonly asp-for="Total" class="form-control" />
                 <span asp-validation-for="Total" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
+                <input asp-for="Message" readonly class="form-control" />
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
+
+
+            @if (Model.OrderItems == null || !Model.OrderItems.Any())
+            {
+
+                <div class="alert alert-info">Nema odabranih artik.</div>
+            }
+
+            else
+            {
+                <h3 class="mt-5 mb-1">Odabrani artikli</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Naziv</th>
+                            <th>Količina</th>
+                            <th>Cijena</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var prductItem in Model.OrderItems)
+                        {
+
+                            int currentRow = rowCounter + 1;
+
+                            <tr>
+                                <td>@currentRow</td>
+                                <td>@prductItem.Product.Name</td>
+                                <td>
+                                    <input type="text" name="OrderItems[@rowCounter].Quantity" value="@Model.OrderItems[rowCounter].Quantity" min="1" class="form-control" />
+                                    <input type="hidden" name="OrderItems[@rowCounter].Id" value="@Model.OrderItems[rowCounter].Id" />
+                                </td>
+                                <td>
+                                    <input type="text" name="OrderItems[@rowCounter].Price" value="@Model.OrderItems[rowCounter].Price" min="1" class="form-control" />
+
+                                </td>
+                            </tr>
+
+                            rowCounter++;
+                        }
+                    </tbody>
+
+                </table>
+            }
+
+
+
+
+
+
+
+
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+
+
+
+
 </div>
 
 <div>
