@@ -4,7 +4,7 @@ namespace WebShop_Shared.Model.Binding.OrderModels
 {
     public class OrderItemUpdateBinding : OrderItemBase
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
  
      
     }

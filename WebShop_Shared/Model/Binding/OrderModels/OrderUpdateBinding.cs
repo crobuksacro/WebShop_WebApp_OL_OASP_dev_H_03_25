@@ -9,6 +9,6 @@ namespace WebShop_Shared.Model.Binding.OrderModels
         public long Id { get; set; }
         public OrderStatus? OrderStatus { get; set; }
         public AddressUpdateBinding? OrderAddress { get; set; }
-        //public List<OrderItemUpdateBinding>? OrderItems { get; set; }
+        public List<OrderItemUpdateBinding>? OrderItems { get; set; }
     }
 }

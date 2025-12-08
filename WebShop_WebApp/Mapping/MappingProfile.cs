@@ -19,7 +19,7 @@ namespace WebShop_WebApp.Mapping
             CreateMap<OrderBinding, Order>()
                 .ForMember(dest => dest.OrderItems, opt => opt.Ignore());
 
-            CreateMap<OrderUpdateBinding, Order>();
+            CreateMap<OrderUpdateBinding, Order>().ForMember(dest => dest.OrderItems, opt => opt.Ignore());
 
             CreateMap<Order, OrderViewModel>();
             CreateMap<OrderItem, OrderItemViewModel>();

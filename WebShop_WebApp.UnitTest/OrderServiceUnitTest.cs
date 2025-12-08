@@ -21,10 +21,18 @@ namespace WebShop_WebApp.UnitTest
             OrderViewModel result = await AddOrder();
             var input = Mapper.Map<OrderUpdateBinding>(result);
             input.OrderStatus = OrderStatus.Shipped;
+
+            var newOrderQuantity = result.OrderItems[0].Quantity + 10;
+
+            input.OrderItems[0].Quantity = newOrderQuantity;
+
             var updatedResult = await orderService.UpdateOrder(input);
             Assert.NotNull(updatedResult);
             Assert.Equal(result.Id, updatedResult.Id);
+            Assert.Equal(result.OrderItems.Count, updatedResult.OrderItems.Count);
+
             Assert.Equal(OrderStatus.Shipped, updatedResult.OrderStatus);
+            Assert.Equal(newOrderQuantity, updatedResult.OrderItems[0].Quantity);
         }
 
 

@@ -174,10 +174,48 @@ namespace WebShop_WebApp.Services.Implementations
                 .Include(y => y.OrderAddress)
                 .FirstOrDefaultAsync(y => y.Id == model.Id);
 
+            if (dbo == null)
+                return null;
+
             _mapper.Map(model, dbo);
+
+            var incomingItems = model.OrderItems ?? new List<OrderItemUpdateBinding>();
+
+            var incomingIds = incomingItems
+                .Where(x => x.Id > 0)
+                .Select(x => x.Id)
+                .ToList();
+
+            var toRemove = dbo.OrderItems
+                .Where(x => !incomingIds.Contains(x.Id))
+                .ToList();
+
+            _db.OrderItems.RemoveRange(toRemove);
+
+            foreach (var item in incomingItems)
+            {
+                if (item.Id > 0)
+                {
+                    var existing = dbo.OrderItems.First(x => x.Id == item.Id);
+                    existing.ProductId = item.Id;
+                    existing.Quantity = item.Quantity;
+                }
+                else
+                {
+                    dbo.OrderItems.Add(new OrderItem
+                    {
+                        ProductId = item.Id,
+                        Quantity = item.Quantity
+                    });
+                }
+            }
+
+            dbo.CalculateTotal();
+
             await _db.SaveChangesAsync();
             return _mapper.Map<OrderViewModel>(dbo);
         }
+
 
 
 
