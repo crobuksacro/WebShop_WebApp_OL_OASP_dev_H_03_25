@@ -102,6 +102,12 @@ namespace WebShop_WebApp.Controllers
         }
 
 
+        public async Task<IActionResult> OrderDetails(long id)
+        {
+            var order = await _orderService.GetOrder(id);
+            return View(order);
+        }
+
         public async Task<IActionResult> CanceleOrder(long id)
         {
 

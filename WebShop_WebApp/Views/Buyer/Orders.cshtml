@@ -29,35 +29,34 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
 
-                    @if(item.OrderStatus != WebShop_Shared.Model.Dto.OrderStatus.Canceled)
+                    @if (item.OrderStatus != WebShop_Shared.Model.Dto.OrderStatus.Canceled)
                     {
                         @Html.ActionLink("Storniraj", "CanceleOrder", new { id = item.Id })
                     }
-
-                   
-@*                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
-            </td>
-        </tr>
-}
+                    @Html.ActionLink("Detalji", "OrderDetails", new { id = item.Id })
+                    @*      @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -153,6 +153,8 @@ namespace WebShop_WebApp.Services.Implementations
             var dbo = await _db.Orders
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
+                .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.ProductCategory)
                 .Include(y => y.OrderAddress)
                 .FirstOrDefaultAsync(y => y.Id == id);
 
