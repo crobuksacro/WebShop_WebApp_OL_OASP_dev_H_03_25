@@ -3,45 +3,29 @@
 @{
     ViewData["Title"] = "OrderDetails";
     int rowCounter = 1;
+    var statusLabels = Model.GetStatusLabels();
+    var translatedStatus = statusLabels.FirstOrDefault(y => y.Key == Model.OrderStatus); // Fixed the variable name from trnslatedStatus to translatedStatus
+
+
 }
 
 <h4>Narudžba broj @Model.Id</h4>
 
 <div class="row">
-    <div class="col-md-4">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Id)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Id)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Created)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.OrderStatus)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.OrderStatus)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Total)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Total)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Message)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Message)
-            </dd>
+    <div class="col-md-4 mb-5">
+        <span><b>@Html.DisplayNameFor(model => model.Id):</b>      @Html.DisplayFor(model => model.Id)</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.Created):</b>      @Html.DisplayFor(model => model.Created)</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.OrderStatus):</b>      @translatedStatus.Value</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.Total):</b>      @Html.DisplayFor(model => model.Total)</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.Message):</b>      @Html.DisplayFor(model => model.Message)</span><br />
 
-        </dl>
+
+        <h3>Adresa isporuke</h3>
+        <span><b>@Html.DisplayNameFor(model => model.OrderAddress.Country):</b>      @Html.DisplayFor(model => model.OrderAddress.Country)</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.OrderAddress.City):</b>      @Html.DisplayFor(model => model.OrderAddress.City)</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.OrderAddress.Street):</b>      @Html.DisplayFor(model => model.OrderAddress.Street)</span><br />
+        <span><b>@Html.DisplayNameFor(model => model.OrderAddress.Number):</b>      @Html.DisplayFor(model => model.OrderAddress.Number)</span><br />
+
     </div>
 
     <div class="col-md-8">

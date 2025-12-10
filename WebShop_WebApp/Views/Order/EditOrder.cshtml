@@ -4,17 +4,8 @@
 @{
     ViewData["Title"] = "OrderDetails";
 
-    var statusLabels = new Dictionary<OrderStatus, string>
-    {
-        { OrderStatus.Pending, "Narudžba je primljena" },
-        { OrderStatus.Processing, "Narudžba se obrađuje" },
-        { OrderStatus.Shipped, "Narudžba je poslana" },
-        { OrderStatus.Delivered, "Narudžba je isporučena" },
-        { OrderStatus.Canceled, "Narudžba je otkazana" },
-        { OrderStatus.Returned, "Narudžba je vraćena" },
-        { OrderStatus.Refunded, "Narudžba je refundirana" }
-    };
 
+    var statusLabels = Model.GetStatusLabels();
     int rowCounter = 0;
 }
 
