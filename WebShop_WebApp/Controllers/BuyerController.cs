@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebShop_Shared.Model.Binding.Common;
 using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Dto;
+using WebShop_Shared.Model.ViewModel.Common;
 using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Controllers
@@ -14,14 +15,14 @@ namespace WebShop_WebApp.Controllers
     {
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
-        private readonly IAccountService accountService;
+        private readonly IAccountService _accountService;
         public static string OrderItemSessionKey = "OrderItems";
 
         public BuyerController(IProductService productService, IOrderService orderService, IAccountService accountService)
         {
             _productService = productService;
             _orderService = orderService;
-            this.accountService = accountService;
+            this._accountService = accountService;
         }
 
         public async Task<IActionResult> Index()
@@ -41,7 +42,7 @@ namespace WebShop_WebApp.Controllers
                 JsonSerializer.Deserialize<List<OrderItemBinding>>(sessionOrderItems)!
                 : new List<OrderItemBinding>();
 
-            var userAddress = await accountService.GetUserAddress<AddressBinding>(User);
+            var userAddress = await _accountService.GetUserAddress<AddressBinding>(User);
 
             var response = new OrderBinding
             {
@@ -100,6 +101,22 @@ namespace WebShop_WebApp.Controllers
             var orders = await _orderService.GetOrders(User);
             return View(orders);
         }
+        public async Task<IActionResult> UpdateOrderAddress(long orderId)
+        {
+            //var address = await _accountService.GetUserAddress<AddressViewModel>(User);
+
+            var order = await _orderService.GetOrder(orderId);
+            var address = await _accountService.GetAddress(order.OrderAddress.Id);
+            address.OrderId = orderId;
+            return View(address);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateOrderAddress(AddressUpdateBinding model)
+        {
+            await _accountService.UpdateAddress(model);
+            return RedirectToAction("OrderDetails", new { id = model.OrderId });
+        }
 
 
         public async Task<IActionResult> OrderDetails(long id)
@@ -115,7 +132,7 @@ namespace WebShop_WebApp.Controllers
             {
                 OrderId = id,
                 OrderStatus = OrderStatus.Canceled
-            }); 
+            });
 
             return RedirectToAction("Orders");
         }

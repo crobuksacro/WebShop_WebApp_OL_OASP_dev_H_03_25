@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebShop_Shared.Model.Binding.AccountModels;
+using WebShop_Shared.Model.Binding.Common;
 using WebShop_Shared.Model.ViewModel.Common;
 using WebShop_Shared.Model.ViewModel.UserModel;
 using WebShop_WebApp.Data;
@@ -14,16 +15,16 @@ namespace WebShop_WebApp.Services.Implementations
     public class AccountService : IAccountService
     {
         private UserManager<ApplicationUser> userManager;
-        private ApplicationDbContext db;
-        private IMapper mapper;
+        private ApplicationDbContext _context;
+        private IMapper _mapper;
         private SignInManager<ApplicationUser> signInManager;
 
         public AccountService(UserManager<ApplicationUser> userManager, ApplicationDbContext db,
             IMapper mapper, SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
-            this.db = db;
-            this.mapper = mapper;
+            this._context = db;
+            this._mapper = mapper;
             this.signInManager = signInManager;
         }
 
@@ -35,13 +36,36 @@ namespace WebShop_WebApp.Services.Implementations
         public async Task<T> GetUserAddress<T>(ClaimsPrincipal user)
         {
             var applicationUser = await userManager.GetUserAsync(user);
-            var dbo = await db.Users
+            var dbo = await _context.Users
                  .Include(y => y.Address)
                  .FirstOrDefaultAsync(y => y.Id == applicationUser.Id);
 
-            return mapper.Map<T>(dbo.Address);
+            return _mapper.Map<T>(dbo.Address);
         }
+        /// <summary>
+        /// Updates Address
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<AddressViewModel> UpdateAddress(AddressUpdateBinding model)
+        {
+            var dbo = await _context.Addresss.FindAsync(model.Id);
+            _mapper.Map(model, dbo);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<AddressViewModel>(dbo);
 
+        }
+        /// <summary>
+        /// Gets Address using id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<AddressViewModel> GetAddress(long id)
+        {
+            var dbo = await _context.Addresss.FindAsync(id);
+            return _mapper.Map<AddressViewModel>(dbo);
+
+        }
 
         /// <summary>
         /// Creates a new user with the specified role.
@@ -74,7 +98,7 @@ namespace WebShop_WebApp.Services.Implementations
                 await userManager.UpdateAsync(user);
                 await signInManager.SignInAsync(user, false);
 
-                return mapper.Map<ApplicationUserViewModel>(user);
+                return _mapper.Map<ApplicationUserViewModel>(user);
 
             }
 

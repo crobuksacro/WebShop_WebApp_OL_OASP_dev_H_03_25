@@ -5,6 +5,7 @@ namespace WebShop_Shared.Model.ViewModel.Common
     public class AddressViewModel : AddressBase
     {
         public long Id { get; set; }
+        public long? OrderId { get; set; }
         public DateTime Updated { get; set; }
     }
 }
