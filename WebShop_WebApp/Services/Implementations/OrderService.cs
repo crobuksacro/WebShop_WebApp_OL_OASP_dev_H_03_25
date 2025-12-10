@@ -137,7 +137,7 @@ namespace WebShop_WebApp.Services.Implementations
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
                 .Include(y => y.OrderAddress)
-                .Where(y => y.BuyerId == buyer.Id)
+                .Where(y => y.BuyerId == buyer.Id && y.Valid)
                 .ToListAsync();
 
             return _mapper.Map<List<OrderViewModel>>(dbo);
