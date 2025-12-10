@@ -37,4 +37,37 @@
         /// </summary>
         Refunded
     }
+
+    public enum DocumentType
+    {
+        Invoice,
+        Offer,
+
+        Receipt,
+        DeliveryNote,
+        WarrantyCertificate,
+        ReturnForm,
+
+
+
+
+    }
+
+    public enum DocumentStatus
+    {
+        Active,
+        Canceled,
+        Paid
+    }
+
+    public enum PaymentMethod
+    {
+        CreditCard,
+        PayPal,
+        BankTransfer,
+        CashOnDelivery
+    }
+
+
+
 }

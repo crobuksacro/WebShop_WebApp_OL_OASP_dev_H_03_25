@@ -105,6 +105,37 @@ namespace WebShop_WebApp.Services.Implementations
             return null;
         }
 
+        /// <summary>
+        /// Updates Application User
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<ApplicationUserViewModel> UpdateApplicationUser(ApplicationUserUpdateBinding model, ClaimsPrincipal user)
+        {
+            var applicationUser = await userManager.GetUserAsync(user);
+            var dbo = await _context.Users
+                 .Include(y => y.Address)
+                 .FirstOrDefaultAsync(y=> y.Id == applicationUser.Id);
+            _mapper.Map(model, dbo);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ApplicationUserViewModel>(applicationUser);
+        }
+
+
+        /// <summary>
+        /// Get User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<ApplicationUserViewModel> GetApplicationUser(ClaimsPrincipal user)
+        {
+            var applicationUser = await userManager.GetUserAsync(user);
+            var dbo = await _context.Users
+                 .Include(y => y.Address)
+                 .FirstOrDefaultAsync(y => y.Id == applicationUser.Id);
+            return _mapper.Map<ApplicationUserViewModel>(applicationUser);
+        }
 
     }
 }

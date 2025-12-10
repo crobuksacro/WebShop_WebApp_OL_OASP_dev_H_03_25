@@ -12,5 +12,7 @@ namespace WebShop_Shared.Model.ViewModel.UserModel
         public string LastName { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public AddressViewModel? Address { get; set; }
+        public string Email { get; set; }
+
     }
 }

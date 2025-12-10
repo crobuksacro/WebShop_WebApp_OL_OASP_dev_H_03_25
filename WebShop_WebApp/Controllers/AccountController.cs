@@ -23,7 +23,23 @@ namespace WebShop_WebApp.Controllers
         public async Task<IActionResult> Register(RegistrationBinding model)
         {
             await _accountService.CreateUser(model, Roles.Buyer);
-            return RedirectToAction("Index","Buyer");
+            return RedirectToAction("Index", "Buyer");
         }
+
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _accountService.GetApplicationUser(User);
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Profile(ApplicationUserUpdateBinding model)
+        {
+            var user = await _accountService.UpdateApplicationUser(model,User);
+            return View(user);
+        }
+
+
     }
 }

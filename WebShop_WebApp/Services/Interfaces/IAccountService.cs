@@ -8,6 +8,13 @@ namespace WebShop_WebApp.Services.Interfaces
 {
     public interface IAccountService
     {
+        /// <summary>
+        /// Updates Application User
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<ApplicationUserViewModel> UpdateApplicationUser(ApplicationUserUpdateBinding model, ClaimsPrincipal user);
         Task<ApplicationUserViewModel> CreateUser(RegistrationBinding model, string role);
         /// <summary>
         /// Gets the address of the specified user.
@@ -27,5 +34,10 @@ namespace WebShop_WebApp.Services.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<AddressViewModel> GetAddress(long id);
-    }
+        /// <summary>
+        /// Get User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<ApplicationUserViewModel> GetApplicationUser(ClaimsPrincipal user);    }
 }

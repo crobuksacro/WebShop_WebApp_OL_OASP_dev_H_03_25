@@ -47,6 +47,8 @@ namespace WebShop_WebApp
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IDocumentService, DocumentService>();
+
 
             builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
 

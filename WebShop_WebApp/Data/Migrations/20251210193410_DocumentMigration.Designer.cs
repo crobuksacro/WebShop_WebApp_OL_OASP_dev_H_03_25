@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebShop_WebApp.Data;
 
@@ -11,9 +12,11 @@ using WebShop_WebApp.Data;
 namespace WebShop_WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251210193410_DocumentMigration")]
+    partial class DocumentMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,21 +289,12 @@ namespace WebShop_WebApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("BuyerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Data")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DocumentStatus")
-                        .HasColumnType("int");
 
                     b.Property<int>("DocumentType")
                         .HasColumnType("int");
@@ -312,10 +306,6 @@ namespace WebShop_WebApp.Data.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BuyerId");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("Document");
                 });
@@ -506,56 +496,56 @@ namespace WebShop_WebApp.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(86),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(822),
                             Name = "Dan",
                             Valid = true
                         },
                         new
                         {
                             Id = 2L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(124),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(864),
                             Name = "Mjesec",
                             Valid = true
                         },
                         new
                         {
                             Id = 3L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(126),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(866),
                             Name = "Godina",
                             Valid = true
                         },
                         new
                         {
                             Id = 4L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(128),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(868),
                             Name = "Komad",
                             Valid = true
                         },
                         new
                         {
                             Id = 5L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(129),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(869),
                             Name = "Kilogram",
                             Valid = true
                         },
                         new
                         {
                             Id = 6L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(131),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(875),
                             Name = "Gram",
                             Valid = true
                         },
                         new
                         {
                             Id = 7L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(133),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(876),
                             Name = "Litara",
                             Valid = true
                         },
                         new
                         {
                             Id = 8L,
-                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(135),
+                            Created = new DateTime(2025, 12, 10, 20, 34, 9, 704, DateTimeKind.Local).AddTicks(878),
                             Name = "Mililitar",
                             Valid = true
                         });
@@ -619,21 +609,6 @@ namespace WebShop_WebApp.Data.Migrations
                         .HasForeignKey("AddressId");
 
                     b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.Document.Document", b =>
-                {
-                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", "Buyer")
-                        .WithMany()
-                        .HasForeignKey("BuyerId");
-
-                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.Navigation("Buyer");
-
-                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("WebShop_WebApp.Models.Dbo.OrderModels.Order", b =>
