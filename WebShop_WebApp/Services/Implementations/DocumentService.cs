@@ -32,7 +32,7 @@ namespace WebShop_WebApp.Services.Implementations
         /// <param name="data"></param>
         /// <param name="buyer"></param>
         /// <returns></returns>
-        public async Task<DocumentViewModel> SaveDocument(ApplicationUser createdBy, DocumentType documentType, DocumentStatus documentStatus, object data, ApplicationUser? buyer)
+        public async Task<DocumentViewModel> SaveDocumentAsync(ApplicationUser createdBy, DocumentType documentType, DocumentStatus documentStatus, object data, ApplicationUser? buyer = null)
         {
 
             var document = new Document

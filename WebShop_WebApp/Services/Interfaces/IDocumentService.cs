@@ -6,6 +6,6 @@ namespace WebShop_WebApp.Services.Interfaces
 {
     public interface IDocumentService
     {
-        Task<DocumentViewModel> SaveDocument(ApplicationUser createdBy, DocumentType documentType, DocumentStatus documentStatus, object data, ApplicationUser? buyer);
+        Task<DocumentViewModel> SaveDocumentAsync(ApplicationUser createdBy, DocumentType documentType, DocumentStatus documentStatus, object data, ApplicationUser? buyer = null);
     }
 }

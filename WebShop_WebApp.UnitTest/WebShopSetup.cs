@@ -73,6 +73,16 @@ namespace WebShop_WebApp.UnitTest
             return new OrderService(InMemoryDbContext, Mapper, UserManager.Object);
         }
 
+        protected IDocumentService GetDocumentService(ApplicationDbContext? db = null)
+        {
+            if (db != null)
+            {
+                return new DocumentService(db, Mapper, UserManager.Object);
+            }
+            return new DocumentService(InMemoryDbContext, Mapper, UserManager.Object);
+        }
+
+
         private void SetupInMemoryContext()
         {
             var inMemoryOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
