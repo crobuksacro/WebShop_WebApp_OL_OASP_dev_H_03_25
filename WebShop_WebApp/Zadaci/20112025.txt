@@ -1,0 +1,10 @@
+﻿1. Napraviti CRUD za unos kategorije
+2. Doraditi CRUD za unos proizvoda tako da se moze izabrati kategorija kojoj proizvod pripada
+3. Napraviti view za CRUD operacijama kod unosa kategorija
+
+4. Unutar aplikacije/projekta WebShop_WebApp dodati novi view, sa prikazom svih kategroija
+5. Dodati u navigaciji link ka tom view-u
+6. Napraviti GUI sa CRUD KATEGORIJA
+
+7. Prikazati listu proizvoda unutar izabrane kategorije
+8. Napraviti CRUD za unos proizvoda unutar izabrane kategorije

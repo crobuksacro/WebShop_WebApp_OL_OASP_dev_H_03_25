@@ -1,0 +1,162 @@
+﻿@using WebShop_Shared.Model.Dto
+@model WebShop_Shared.Model.ViewModel.OrderModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "OrderDetails";
+
+
+    var statusLabels = Model.GetStatusLabels();
+    int rowCounter = 0;
+}
+
+<h1>Detalji narudžbe br. @Model.Id</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="EditOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" readonly class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" readonly class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+
+      
+
+            <div class="form-group">
+                <label  asp-for="Total" class="control-label"></label>
+                <input readonly asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" readonly class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-5">
+                <label asp-for="OrderStatus" class="control-label"></label>
+
+                <select asp-for="OrderStatus" class="form-control">
+                    @foreach (var status in Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>())
+                    {
+                        <option value="@status" selected="@(Model.OrderStatus == status)">
+                            @statusLabels[status]
+                        </option>
+                    }
+                </select>
+
+                <span asp-validation-for="OrderStatus" class="text-danger"></span>
+            </div>
+
+
+            <h5 class="mt-5 mb-1">Adresa isporuke</h5>
+
+            <div class="form-group">
+
+                <input asp-for="OrderAddress.Id" hidden class="form-control" />
+
+                <label asp-for="OrderAddress.Street" class="control-label"></label>
+                <input asp-for="OrderAddress.Street" class="form-control" />
+                <span asp-validation-for="OrderAddress.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress.Number" class="control-label"></label>
+                <input asp-for="OrderAddress.Number" class="form-control" />
+                <span asp-validation-for="OrderAddress.Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress.City" class="control-label"></label>
+                <input asp-for="OrderAddress.City" class="form-control" />
+                <span asp-validation-for="OrderAddress.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderAddress.Country" class="control-label"></label>
+                <input asp-for="OrderAddress.Country" class="form-control" />
+                <span asp-validation-for="OrderAddress.Country" class="text-danger"></span>
+            </div>
+
+
+
+            @if (Model.OrderItems == null || !Model.OrderItems.Any())
+            {
+
+                <div class="alert alert-info">Nema odabranih artik.</div>
+            }
+
+            else
+            {
+                <h5 class="mt-5 mb-1">Odabrani artikli</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Naziv</th>
+                            <th>Količina</th>
+                            <th>Cijena</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var prductItem in Model.OrderItems)
+                        {
+
+                            int currentRow = rowCounter + 1;
+
+                            <tr>
+                                <td>@currentRow</td>
+                                <td>@prductItem.Product.Name</td>
+                                <td>
+                                    <input type="text" name="OrderItems[@rowCounter].Quantity" value="@Model.OrderItems[rowCounter].Quantity" min="1" class="form-control" />
+                                    <input type="hidden" name="OrderItems[@rowCounter].Id" value="@Model.OrderItems[rowCounter].Id" />
+                                </td>
+                                <td>
+                                    <input type="text" name="OrderItems[@rowCounter].Price" value="@Model.OrderItems[rowCounter].Price" min="1" class="form-control" />
+
+                                </td>
+                            </tr>
+
+                            rowCounter++;
+                        }
+                    </tbody>
+
+                </table>
+            }
+
+
+
+
+
+
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+
+
+
+</div>
+
+<div>
+    <a asp-action="Orders">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

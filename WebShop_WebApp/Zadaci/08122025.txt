@@ -1,0 +1,5 @@
+﻿1. Napravite u roli kupca, uvid u vlastitu narduzbu
+2. Prevedite nazive stupaca u detaljima narudzbe (staus mora biti na hrvatskom)
+3. Napraviti mogućnost uređivanja narudzbe od strane Admina
+4. Doradite formu od admina za uređivanje narudzbe tako da prikazuje sve potrebne informacije o adresi isporuke, s mogućnošću uređivanja istih.
+5. 

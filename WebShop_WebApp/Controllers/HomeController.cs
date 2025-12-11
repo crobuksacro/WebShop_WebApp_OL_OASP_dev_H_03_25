@@ -1,21 +1,35 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebShop_Shared.Model.Dto;
 using WebShop_WebApp.Models;
+using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            if(User != null)
+            {
+                if (User.IsInRole(Roles.Buyer))
+                {
+                    return RedirectToAction("Index", "Buyer");
+                }
+            }
+
+            var products = await _productService.GetAll();
+            return View(products);
         }
 
         public IActionResult Privacy()

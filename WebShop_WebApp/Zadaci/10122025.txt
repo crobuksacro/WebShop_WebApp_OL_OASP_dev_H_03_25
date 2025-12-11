@@ -1,0 +1,5 @@
+﻿1. Napravite u roli kupca, uvid u adresu isporuke narudzbe
+2. Dodati u roli kupca,unutar view-a za pregled svih vlastitih narudzbi mogucnost promjene adrese isporuke za narudzbu.
+3. Dodati u navigaciju roli kupac, poseban link za pregled svog profila. U profilu moze uredjivati vlatsite podatke (ime, prezime, adresa).
+4. 
+5. 

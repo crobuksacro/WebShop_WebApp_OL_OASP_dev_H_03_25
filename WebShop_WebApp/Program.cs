@@ -1,6 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebShop_WebApp.Data;
+using WebShop_WebApp.Mapping;
+using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Services.Implementations;
+using WebShop_WebApp.Services.Interfaces;
 
 namespace WebShop_WebApp
 {
@@ -16,9 +21,59 @@ namespace WebShop_WebApp
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            #region Identity Configuration
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(
+         options =>
+         {
+             options.SignIn.RequireConfirmedAccount = true;
+             options.Password.RequiredLength = 6;
+             options.Password.RequiredUniqueChars = 0;
+             options.Password.RequireLowercase = false;
+             options.Password.RequireUppercase = false;
+             options.Password.RequireNonAlphanumeric = false;
+             options.Password.RequireDigit = false;
+         }
+
+
+         )
+         .AddRoles<IdentityRole>()
+         .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            #endregion
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IDocumentService, DocumentService>();
+
+
+            builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
+
+
+            // Add session support
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+            #region AutoMapper Configuration
+            var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            }, loggerFactory);
+
+            var mapper = configuration.CreateMapper();
+            builder.Services.AddSingleton(mapper);
+            #endregion
+
+
 
             var app = builder.Build();
 
@@ -41,10 +96,17 @@ namespace WebShop_WebApp
 
             app.UseAuthorization();
 
+
+            // Add session middleware
+            app.UseSession();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+            var identitySetup = app.Services.GetRequiredService<IIdentitySetup>();
+
+
 
             app.Run();
         }

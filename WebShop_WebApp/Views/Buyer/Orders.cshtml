@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WebShop_Shared.Model.ViewModel.OrderModels.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Narudzbe</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+
+                    @if (item.OrderStatus != WebShop_Shared.Model.Dto.OrderStatus.Canceled)
+                    {
+                        @Html.ActionLink("Storniraj", "CanceleOrder", new { id = item.Id })
+                    }
+                    @Html.ActionLink("Detalji", "OrderDetails", new { id = item.Id })
+                    @*      @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

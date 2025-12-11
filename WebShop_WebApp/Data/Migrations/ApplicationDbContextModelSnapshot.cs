@@ -17,7 +17,7 @@ namespace WebShop_WebApp.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.20")
+                .HasAnnotation("ProductVersion", "8.0.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -72,71 +72,6 @@ namespace WebShop_WebApp.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -224,7 +159,247 @@ namespace WebShop_WebApp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.Product", b =>
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.Address", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresss");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("AddressId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.Document.Document", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BuyerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DocumentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Document");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.OrderModels.Order", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BuyerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("OrderAddressId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(7, 2)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("OrderAddressId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.OrderModels.OrderItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long?>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ProductModels.Product", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,6 +420,15 @@ namespace WebShop_WebApp.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<long?>("ProductCategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long?>("QuantityTypeId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
@@ -253,7 +437,128 @@ namespace WebShop_WebApp.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductCategoryId");
+
+                    b.HasIndex("QuantityTypeId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ProductModels.ProductCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductCategorys");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ProductModels.QuantityType", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Valid")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuantityTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(86),
+                            Name = "Dan",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(124),
+                            Name = "Mjesec",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(126),
+                            Name = "Godina",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(128),
+                            Name = "Komad",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(129),
+                            Name = "Kilogram",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(131),
+                            Name = "Gram",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(133),
+                            Name = "Litara",
+                            Valid = true
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            Created = new DateTime(2025, 12, 10, 20, 44, 26, 879, DateTimeKind.Local).AddTicks(135),
+                            Name = "Mililitar",
+                            Valid = true
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -267,7 +572,7 @@ namespace WebShop_WebApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,7 +581,7 @@ namespace WebShop_WebApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -291,7 +596,7 @@ namespace WebShop_WebApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -300,11 +605,88 @@ namespace WebShop_WebApp.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ApplicationUser", b =>
+                {
+                    b.HasOne("WebShop_WebApp.Models.Dbo.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.Document.Document", b =>
+                {
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId");
+
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.OrderModels.Order", b =>
+                {
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ApplicationUser", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId");
+
+                    b.HasOne("WebShop_WebApp.Models.Dbo.Address", "OrderAddress")
+                        .WithMany()
+                        .HasForeignKey("OrderAddressId");
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("OrderAddress");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.OrderModels.OrderItem", b =>
+                {
+                    b.HasOne("WebShop_WebApp.Models.Dbo.OrderModels.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ProductModels.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ProductModels.Product", b =>
+                {
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ProductModels.ProductCategory", "ProductCategory")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductCategoryId");
+
+                    b.HasOne("WebShop_WebApp.Models.Dbo.ProductModels.QuantityType", "QuantityType")
+                        .WithMany()
+                        .HasForeignKey("QuantityTypeId");
+
+                    b.Navigation("ProductCategory");
+
+                    b.Navigation("QuantityType");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.OrderModels.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("WebShop_WebApp.Models.Dbo.ProductModels.ProductCategory", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

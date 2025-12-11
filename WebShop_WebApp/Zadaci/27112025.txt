@@ -1,0 +1,5 @@
+﻿1. Napravite View za detalje kategorije, sa prikazom svih proizvoda te kategorije, prilagodjen kupcu
+2. 
+3. 
+4. 
+5. 

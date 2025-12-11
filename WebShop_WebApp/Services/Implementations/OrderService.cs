@@ -1,0 +1,228 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using WebShop_Shared.Model.Binding.OrderModels;
+using WebShop_Shared.Model.Dto;
+using WebShop_Shared.Model.ViewModel.OrderModels;
+using WebShop_WebApp.Data;
+using WebShop_WebApp.Models.Dbo;
+using WebShop_WebApp.Models.Dbo.OrderModels;
+using WebShop_WebApp.Services.Interfaces;
+
+namespace WebShop_WebApp.Services.Implementations
+{
+    public class OrderService : IOrderService
+    {
+        private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
+        private UserManager<ApplicationUser> _userManager;
+
+        public OrderService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
+        {
+            _db = context;
+            _mapper = mapper;
+            _userManager = userManager;
+        }
+        /// <summary>
+        /// Updates the status of an existing order
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> UpdateOrderStatus(OrderStatusUpdateBinding model)
+        {
+            var dbo = await _db.Orders.FirstOrDefaultAsync(y => y.Id == model.OrderId);
+            if (dbo == null)
+            {
+                return null;
+            }
+
+            dbo.OrderStatus = model.OrderStatus;
+            await _db.SaveChangesAsync();
+            return _mapper.Map<OrderViewModel>(dbo);
+        }
+        /// <summary>
+        /// Adds a new order to the database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> AddOrder(OrderBinding model, ClaimsPrincipal user)
+        {
+            var applicationUser = await _userManager.GetUserAsync(user);
+            return await AddOrder(model, applicationUser);
+
+        }
+
+
+        /// <summary>
+        /// Adds a new order to the database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="buyer"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> AddOrder(OrderBinding model, ApplicationUser buyer)
+        {
+            var dbo = _mapper.Map<Order>(model);
+            dbo.OrderItems = new List<OrderItem>();
+
+            var productItems = _db.Products.Where(y => model.OrderItems.Select(x => x.ProductId).Contains(y.Id)).ToList();
+
+            foreach (var product in model.OrderItems)
+            {
+
+                var target = productItems.FirstOrDefault(x => x.Id == product.ProductId);
+                dbo.OrderItems.Add(new OrderItem
+                {
+                    ProductId = product.ProductId,
+                    Quantity = product.Quantity,
+                    Price = target != null ? target.Price : 0
+                });
+
+            }
+
+            dbo.OrderStatus = OrderStatus.Pending;
+            dbo.Buyer = buyer;
+            dbo.CalculateTotal();
+
+            _db.Orders.Add(dbo);
+            await _db.SaveChangesAsync();
+            return _mapper.Map<OrderViewModel>(dbo);
+        }
+        /// <summary>
+        /// Gets orders based on user role
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<OrderViewModel>> GetOrders(ClaimsPrincipal user)
+        {
+            var applicationUser = await _userManager.GetUserAsync(user);
+            var role = await _userManager.GetRolesAsync(applicationUser);
+
+            switch (role[0])
+            {
+                case Roles.Admin:
+                    return await GetOrders();
+                case Roles.Buyer:
+                    return await GetOrders(applicationUser);
+                default:
+                    throw new NotImplementedException("Role not implemented");
+            }
+
+        }
+        /// <summary>
+        /// Gets all orders from the database
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<OrderViewModel>> GetOrders()
+        {
+            var dbo = await _db.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .Include(y => y.OrderAddress)
+                .Where(y=>y.Valid)
+                .ToListAsync();
+
+            return _mapper.Map<List<OrderViewModel>>(dbo);
+        }
+        /// <summary>
+        /// gets all orders for a specific buyer
+        /// </summary>
+        /// <param name="buyer"></param>
+        /// <returns></returns>
+        public async Task<List<OrderViewModel>> GetOrders(ApplicationUser buyer)
+        {
+            var dbo = await _db.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .Include(y => y.OrderAddress)
+                .Where(y => y.BuyerId == buyer.Id && y.Valid)
+                .ToListAsync();
+
+            return _mapper.Map<List<OrderViewModel>>(dbo);
+        }
+
+        /// <summary>
+        /// Retrieves an order by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an  OrderViewModel representing
+        /// the order details, or null  if no order with the specified identifier is found.</returns>
+        public async Task<OrderViewModel> GetOrder(long id)
+        {
+            var dbo = await _db.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.ProductCategory)
+                .Include(y => y.OrderAddress)
+                .FirstOrDefaultAsync(y => y.Id == id);
+
+
+            return _mapper.Map<OrderViewModel>(dbo);
+        }
+
+
+        /// <summary>
+        /// Updates an existing order
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<OrderViewModel> UpdateOrder(OrderUpdateBinding model)
+        {
+            var dbo = await _db.Orders
+                .Include(y => y.Buyer)
+                .Include(y => y.OrderItems)
+                .Include(y => y.OrderAddress)
+                .FirstOrDefaultAsync(y => y.Id == model.Id);
+
+            if (dbo == null)
+                return null;
+
+            _mapper.Map(model, dbo);
+
+            var incomingItems = model.OrderItems ?? new List<OrderItemUpdateBinding>();
+
+            var incomingIds = incomingItems
+                .Where(x => x.Id > 0)
+                .Select(x => x.Id)
+                .ToList();
+
+            var toRemove = dbo.OrderItems
+                .Where(x => !incomingIds.Contains(x.Id))
+                .ToList();
+
+            _db.OrderItems.RemoveRange(toRemove);
+
+            foreach (var item in incomingItems)
+            {
+                if (item.Id > 0)
+                {
+                    var existing = dbo.OrderItems.First(x => x.Id == item.Id);
+                    existing.Quantity = item.Quantity;
+                    existing.Price = item.Price;
+                }
+                else
+                {
+                    dbo.OrderItems.Add(new OrderItem
+                    {
+                        ProductId = item.Id,
+                        Quantity = item.Quantity
+                    });
+                }
+            }
+
+            dbo.CalculateTotal();
+
+            await _db.SaveChangesAsync();
+            return _mapper.Map<OrderViewModel>(dbo);
+        }
+
+
+
+
+
+
+    }
+}

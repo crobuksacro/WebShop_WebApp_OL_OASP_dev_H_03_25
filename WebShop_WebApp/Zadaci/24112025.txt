@@ -1,0 +1,5 @@
+﻿1. Napravite Novi servis (OrderService) koji će sadržavati metodu za kreiranje nove narudžbe
+2. Omogućiti korisnicima da pregledaju svoje narudžbe
+3. Implementirati funkcionalnost za ažuriranje statusa narudžbe
+4. Dodati mogućnost otkazivanja narudžbe *
+5. Implementirati logiku za vraćanje proizvoda *

@@ -1,4 +1,28 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using WebShop_Shared.Model.Dto
+@using WebShop_WebApp.Models.Dbo
+@inject SignInManager<ApplicationUser> SignInManager;
+@inject UserManager<ApplicationUser> UserManager;
+
+@{
+    string role = string.Empty;
+    bool isSignedIn = false;
+
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        var roles = await UserManager.GetRolesAsync(user);
+        role = roles[0];
+        isSignedIn = true; // Set isSignedIn to true if the user is signed in
+    }
+
+
+}
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,12 +43,64 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+
+                        @if (!isSignedIn)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+
+
+
+
+
+                        }
+
+                        else
+                        {
+
+                            @switch (role)
+                            {
+
+
+                                case Roles.Buyer:
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Buyer" asp-action="Index">Home</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Buyer" asp-action="Orders">Narudzbe</a>
+                                    </li>
+                                    break;
+
+                                case Roles.Admin:
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Categorys">Categories</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Orders">Narudzbe</a>
+                                    </li>
+                                    break;
+
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">Profil</a>
+                            </li>
+
+
+                        }
+
+
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
