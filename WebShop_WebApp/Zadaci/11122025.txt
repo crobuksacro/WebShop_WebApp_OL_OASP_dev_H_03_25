@@ -1,5 +1,6 @@
 ﻿1. Napravite Unit test za document service koji ce testirati metodu za dodavanje novog dokumenta.
-2. Napravite unutar Document servisa novu metodtu za dohvat svih dokuemnata (moze se filtrirat pri tome po tipu dokumenta i statusu dokumenta).)
+2. Napravite unutar Document servisa novu metodtu za dohvat svih dokuemnata (moze se filtrirat pri tome po tipu dokumenta i statusu dokumenta).
 3. Napravite unutar document servisa novu metodu za azuriranje statusa dokumenta.
 4. Napravite unit test za sve metode unutar document servisa.
-5. 
+5. Napravite prikaz racuna unutar detalja narudzbe, za rolu Admin
+6. Napravite prikaz racuna unutar detalja narudzbe, za rolu Buyer
