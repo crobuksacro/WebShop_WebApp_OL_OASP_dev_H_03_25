@@ -35,7 +35,7 @@ namespace Ispit.Books.Data
         }
 
 
-        public DbSet<Author> Author { get; set; }
+        public DbSet<Author> Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Book> Books { get; set; }
     }

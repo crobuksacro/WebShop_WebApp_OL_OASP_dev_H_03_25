@@ -19,7 +19,7 @@ namespace Ispit.Books
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
-
+            builder.Services.AddScoped<IBookService, BookService>();
 
             #region Identity Configuration
 
