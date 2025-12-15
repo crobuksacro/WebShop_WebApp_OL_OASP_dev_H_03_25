@@ -12,11 +12,13 @@ namespace WebShop_WebApp.Services.Implementations
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment? _env;
 
-        public ProductService(ApplicationDbContext context, IMapper mapper)
+        public ProductService(ApplicationDbContext context, IMapper mapper, IWebHostEnvironment? env = null)
         {
             _context = context;
             _mapper = mapper;
+            _env = env;
         }
 
 
@@ -95,17 +97,33 @@ namespace WebShop_WebApp.Services.Implementations
         /// <returns></returns>
         public async Task<ProductViewModel?> Update(ProductUpdateBinding model)
         {
-            var dbo = await _context.Products
-                .FirstOrDefaultAsync(p => p.Id == model.Id);
+            var dbo = await _context.Products.FirstOrDefaultAsync(p => p.Id == model.Id);
             if (dbo == null)
-            {
                 return null;
-            }
 
             _mapper.Map(model, dbo);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<ProductViewModel>(dbo);
 
+            if (model.Img != null && model.Img.Length > 0 && _env != null)
+            {
+                var uploadsPath = Path.Combine(_env.WebRootPath, "uploads", "products");
+                Directory.CreateDirectory(uploadsPath);
+
+                var extension = Path.GetExtension(model.Img.FileName);
+                var fileName = $"{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine(uploadsPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.Img.CopyToAsync(stream);
+                }
+
+                dbo.ImgUrl = $"/uploads/products/{fileName}";
+            }
+
+            dbo.Updated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<ProductViewModel>(dbo);
         }
 
         /// <summary>

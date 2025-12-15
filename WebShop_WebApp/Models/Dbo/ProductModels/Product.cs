@@ -16,5 +16,8 @@ namespace WebShop_WebApp.Models.Dbo.ProductModels
         public QuantityType? QuantityType { get; set; }
         public long? QuantityTypeId { get; set; }
 
+        public string? ImgUrl { get; set; }
+
+
     }
 }

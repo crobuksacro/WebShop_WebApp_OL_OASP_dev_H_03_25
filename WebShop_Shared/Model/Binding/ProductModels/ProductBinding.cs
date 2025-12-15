@@ -1,4 +1,5 @@
-﻿using WebShop_Shared.Model.Base.ProductModels;
+﻿using Microsoft.AspNetCore.Http;
+using WebShop_Shared.Model.Base.ProductModels;
 using WebShop_Shared.Model.ViewModel.ProductModels;
 
 namespace WebShop_Shared.Model.Binding.ProductModels
@@ -14,6 +15,10 @@ namespace WebShop_Shared.Model.Binding.ProductModels
     {
         public long Id { get; set; }
         public long? QuantityTypeId { get; set; }
+        public IFormFile? Img { get; set; }
     }
+
+
+
 
 }

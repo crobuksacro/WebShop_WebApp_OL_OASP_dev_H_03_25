@@ -19,5 +19,6 @@ namespace WebShop_Shared.Model.ViewModel.ProductModels
         /// </summary>
         public List<QuantityTypeViewModel> QuantityTypes { get; set; }
         public bool Valid { get; set; }
+        public string ImgUrl { get; set; }
     }
 }
