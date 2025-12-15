@@ -1,0 +1,5 @@
+﻿1. Doraditi webshop naslovnu stranicu, tako da umjesto kategorija prikazuje proizvode
+2. Uskladitit dizajn strance sa ubacenim predloskom
+3. Iz proizva moguce je otici na detalje proizvoda
+4. U samoj kartici proizvoda ispisati kategoriju u kojoj pripada proizvod
+5. 
