@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebShop_WebApp.Data;
 
@@ -11,9 +12,11 @@ using WebShop_WebApp.Data;
 namespace WebShop_WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251211193325_documentTableUpdateMigration")]
+    partial class documentTableUpdateMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,9 +337,6 @@ namespace WebShop_WebApp.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("InvoiceId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
@@ -358,8 +358,6 @@ namespace WebShop_WebApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
-
-                    b.HasIndex("InvoiceId");
 
                     b.HasIndex("OrderAddressId");
 
@@ -511,56 +509,56 @@ namespace WebShop_WebApp.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1788),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8344),
                             Name = "Dan",
                             Valid = true
                         },
                         new
                         {
                             Id = 2L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1858),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8381),
                             Name = "Mjesec",
                             Valid = true
                         },
                         new
                         {
                             Id = 3L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1860),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8383),
                             Name = "Godina",
                             Valid = true
                         },
                         new
                         {
                             Id = 4L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1862),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8385),
                             Name = "Komad",
                             Valid = true
                         },
                         new
                         {
                             Id = 5L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1864),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8386),
                             Name = "Kilogram",
                             Valid = true
                         },
                         new
                         {
                             Id = 6L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1866),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8388),
                             Name = "Gram",
                             Valid = true
                         },
                         new
                         {
                             Id = 7L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1867),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8389),
                             Name = "Litara",
                             Valid = true
                         },
                         new
                         {
                             Id = 8L,
-                            Created = new DateTime(2025, 12, 11, 20, 39, 18, 958, DateTimeKind.Local).AddTicks(1869),
+                            Created = new DateTime(2025, 12, 11, 20, 33, 24, 298, DateTimeKind.Local).AddTicks(8391),
                             Name = "Mililitar",
                             Valid = true
                         });
@@ -647,17 +645,11 @@ namespace WebShop_WebApp.Data.Migrations
                         .WithMany()
                         .HasForeignKey("BuyerId");
 
-                    b.HasOne("WebShop_WebApp.Models.Dbo.Document.Document", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId");
-
                     b.HasOne("WebShop_WebApp.Models.Dbo.Address", "OrderAddress")
                         .WithMany()
                         .HasForeignKey("OrderAddressId");
 
                     b.Navigation("Buyer");
-
-                    b.Navigation("Invoice");
 
                     b.Navigation("OrderAddress");
                 });

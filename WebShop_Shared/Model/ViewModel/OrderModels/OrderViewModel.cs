@@ -22,7 +22,7 @@ namespace WebShop_Shared.Model.ViewModel.OrderModels
         [Column(TypeName = "decimal(7, 2)")]
         [Display(Name = "Ukupno")]
         public decimal Total { get; set; }
-
+        public long? InvoiceId { get; set; }
 
         public Dictionary<OrderStatus, string> GetStatusLabels()
         {

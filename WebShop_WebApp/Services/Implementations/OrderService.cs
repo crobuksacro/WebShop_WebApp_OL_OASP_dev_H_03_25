@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebShop_Shared.Model.Binding.OrderModels;
 using WebShop_Shared.Model.Dto;
+using WebShop_Shared.Model.Dto.Document;
 using WebShop_Shared.Model.ViewModel.OrderModels;
 using WebShop_WebApp.Data;
 using WebShop_WebApp.Models.Dbo;
@@ -17,12 +18,15 @@ namespace WebShop_WebApp.Services.Implementations
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
         private UserManager<ApplicationUser> _userManager;
+        private readonly IDocumentService _documentService;
 
-        public OrderService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
+
+        public OrderService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager, IDocumentService documentService)
         {
             _db = context;
             _mapper = mapper;
             _userManager = userManager;
+            this._documentService = documentService;
         }
         /// <summary>
         /// Updates the status of an existing order
@@ -87,7 +91,23 @@ namespace WebShop_WebApp.Services.Implementations
 
             _db.Orders.Add(dbo);
             await _db.SaveChangesAsync();
-            return _mapper.Map<OrderViewModel>(dbo);
+            var response = _mapper.Map<OrderViewModel>(dbo);
+            var invoice = new InvoiceDto
+            {
+                BuyerId = buyer.Id,
+                Order = response,
+                PaymentMethod = PaymentMethod.CreditCard
+            };
+
+            var invoiceResult = await _documentService.SaveDocumentAsync(buyer, DocumentType.Invoice, DocumentStatus.Active, invoice, buyer);
+            dbo.InvoiceId = invoiceResult.Id;
+            response.InvoiceId = invoiceResult.Id;
+            await _db.SaveChangesAsync();
+
+
+
+
+            return response;
         }
         /// <summary>
         /// Gets orders based on user role
@@ -121,7 +141,7 @@ namespace WebShop_WebApp.Services.Implementations
                 .Include(y => y.Buyer)
                 .Include(y => y.OrderItems)
                 .Include(y => y.OrderAddress)
-                .Where(y=>y.Valid)
+                .Where(y => y.Valid)
                 .ToListAsync();
 
             return _mapper.Map<List<OrderViewModel>>(dbo);
@@ -157,6 +177,7 @@ namespace WebShop_WebApp.Services.Implementations
                 .ThenInclude(x => x.Product)
                 .ThenInclude(x => x.ProductCategory)
                 .Include(y => y.OrderAddress)
+                .Include(y=>y.Invoice)
                 .FirstOrDefaultAsync(y => y.Id == id);
 
 

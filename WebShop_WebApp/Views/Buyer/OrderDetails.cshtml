@@ -26,9 +26,9 @@
         <span><b>@Html.DisplayNameFor(model => model.OrderAddress.Street):</b>      @Html.DisplayFor(model => model.OrderAddress.Street)</span><br />
         <span><b>@Html.DisplayNameFor(model => model.OrderAddress.Number):</b>      @Html.DisplayFor(model => model.OrderAddress.Number)</span><br />
 
-        @if(Model.OrderStatus == WebShop_Shared.Model.Dto.OrderStatus.Pending)
+        @if (Model.OrderStatus == WebShop_Shared.Model.Dto.OrderStatus.Pending)
         {
-                    @Html.ActionLink("Promjeni adresu isporuke", "UpdateOrderAddress", null, new { orderId = Model.Id }, new { @class = "btn btn-primary mt-3" })
+            @Html.ActionLink("Promjeni adresu isporuke", "UpdateOrderAddress", null, new { orderId = Model.Id }, new { @class = "btn btn-primary mt-3" })
         }
 
 
@@ -69,6 +69,24 @@
 
         </table>
     </div>
+
+    @if (Model.InvoiceId.HasValue)
+    {
+        <div class="col-12 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    Faktura generirana
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Račun izrađen pod brojem @Model.InvoiceId</h5>
+                    <p class="card-text">Molimo da prilikom komunikacije se referencirate pod tim brojem</p>
+              @*       <a href="#" class="btn btn-primary">Go somewhere</a> *@
+                </div>
+            </div>
+        </div>
+    }
+
+
 </div>
 <div>
     @Html.ActionLink("Storniraj", "CanceleOrder", new { id = Model.Id }, new { @class = "btn btn-danger" })

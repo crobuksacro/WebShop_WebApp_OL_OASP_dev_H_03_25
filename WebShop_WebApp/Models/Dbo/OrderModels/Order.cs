@@ -21,6 +21,9 @@ namespace WebShop_WebApp.Models.Dbo.OrderModels
         public Address? OrderAddress { get; set; }
         public long? OrderAddressId { get; set; }
         public OrderStatus OrderStatus { get; set; }
+        public WebShop_WebApp.Models.Dbo.Document.Document? Invoice { get; set; }
+        public long? InvoiceId { get; set; }
+
 
         public ICollection<OrderItem>? OrderItems { get; set; }
 

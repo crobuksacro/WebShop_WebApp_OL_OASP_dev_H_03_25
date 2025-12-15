@@ -68,9 +68,9 @@ namespace WebShop_WebApp.UnitTest
         {
             if (db != null)
             {
-                return new OrderService(db, Mapper, UserManager.Object);
+                return new OrderService(db, Mapper, UserManager.Object, GetDocumentService(db));
             }
-            return new OrderService(InMemoryDbContext, Mapper, UserManager.Object);
+            return new OrderService(InMemoryDbContext, Mapper, UserManager.Object, GetDocumentService());
         }
 
         protected IDocumentService GetDocumentService(ApplicationDbContext? db = null)

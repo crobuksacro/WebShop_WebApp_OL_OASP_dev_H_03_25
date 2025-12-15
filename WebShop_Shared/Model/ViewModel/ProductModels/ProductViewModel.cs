@@ -1,4 +1,5 @@
-﻿using WebShop_Shared.Model.Base.ProductModels;
+﻿using System.Text.Json.Serialization;
+using WebShop_Shared.Model.Base.ProductModels;
 
 namespace WebShop_Shared.Model.ViewModel.ProductModels
 {
@@ -6,6 +7,7 @@ namespace WebShop_Shared.Model.ViewModel.ProductModels
     {
         public long Id { get; set; }
         public long? ProductCategoryId { get; set; }
+        [JsonIgnore]
         public ProductCategoryViewModel? ProductCategory { get; set; }
 
         public long? QuantityTypeId { get; set; }
