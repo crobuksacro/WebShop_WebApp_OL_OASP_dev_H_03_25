@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "8c29dc4c-87a2-4305-ace9-b5eac87b09ec",
+		"name": "WebShopAlgebraTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4263423"
+	},
+	"item": [
+		{
+			"name": "Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Ogledalo\",\r\n  \"description\": \"Ogledalo\",\r\n  \"price\": 15,\r\n  \"quantity\": 50,\r\n  \"productCategoryId\": 1,\r\n  \"quantityTypeId\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7219/api/Product",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7219",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

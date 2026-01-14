@@ -1,4 +1,6 @@
-﻿using WebShop_Shared.Model.Binding.ProductModels;
+﻿using Microsoft.EntityFrameworkCore;
+using WebShop_Api.Model.Dbo;
+using WebShop_Shared.Model.Binding.ProductModels;
 using WebShop_Shared.Model.ViewModel.ProductModels;
 
 namespace WebShop_Api.Services.Interfaces
@@ -32,5 +34,49 @@ namespace WebShop_Api.Services.Interfaces
         /// <param name="model"></param>
         /// <returns></returns>
         Task<ProductViewModel?> Update(ProductUpdateBinding model);
+        /// <summary>
+        /// Gets a product by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<ProductViewModel?> GetById(long id);
+        /// <summary>
+        /// Gets all quantity types from the database.
+        /// </summary>
+        /// <param name="valid"></param>
+        /// <returns></returns>
+        Task<List<QuantityTypeViewModel>> GetAllQuantityTypes(bool? valid = null);
+        /// <summary>
+        /// Adds a new ProductCategory to the database.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task<ProductCategoryViewModel> AddProductCategory(ProductCategoryBinding model);
+        /// <summary>
+        /// Gets all ProductCategorys from the database.
+        /// </summary>
+        /// <returns></returns>
+        Task<List<ProductCategoryViewModel>> GetAllProductCategorys(bool? valid = null);
+        /// <summary>
+        /// Gets a ProductCategory by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<ProductCategoryViewModel?> GetByIdProductCategory(long id);
+
+        /// <summary>
+        /// Updates an existing ProductCategory.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task<ProductCategoryViewModel?> UpdateProductCategory(ProductCategoryUpdateBinding model);
+
+        /// <summary>
+        /// Deletes a ProductCategory by setting its Valid property to false. 
+        /// soft delete.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<ProductCategoryViewModel> DeleteProductCategory(long id);
     }
 }

@@ -66,6 +66,62 @@ namespace WebShop_Api.Controllers
             return Ok(await _productService.Delete(id));
         }
 
+        /// <summary>
+        /// Adds a new product category to the database.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("categorie")]
+        [ProducesResponseType(typeof(ProductCategoryViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> AddProductCategory([FromBody] ProductCategoryBinding model)
+        {
+            return Ok(await _productService.AddProductCategory(model));
+        }
+        /// <summary>
+        /// Gets all product categories.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPut("categorie")]
+        [ProducesResponseType(typeof(ProductCategoryViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update([FromBody] ProductCategoryUpdateBinding model)
+        {
+            return Ok(await _productService.UpdateProductCategory(model));
+        }
 
+        /// <summary>
+        /// Deletes a product category by setting its Valid property to false.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("categorie/{id}")]
+        [ProducesResponseType(typeof(ProductCategoryViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteProductCategory(long id)
+        {
+            return Ok(await _productService.DeleteProductCategory(id));
+        }
+
+        /// <summary>
+        /// Gets all product categories.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("categories")]
+        [ProducesResponseType(typeof(List<ProductCategoryViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllProductCategorys()
+        {
+            return Ok(await _productService.GetAllProductCategorys());
+        }
+
+        /// <summary>
+        /// Gets a product category by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("categorie/{id}")]
+        [ProducesResponseType(typeof(ProductCategoryViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByIdProductCategory(long id)
+        {
+            return Ok(await _productService.GetByIdProductCategory(id));
+        }
     }
 }
