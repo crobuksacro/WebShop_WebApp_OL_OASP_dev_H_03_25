@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShop_WebApp", "WebShop_WebApp\WebShop_WebApp.csproj", "{C65059F8-FE95-4FE5-BB1E-B2D61EB54578}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShop_WebApp.UnitTest", "WebShop_WebApp.UnitTest\WebShop_WebApp.UnitTest.csproj", "{BB81E641-3FC0-4154-AE45-D98C3E084C35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ispit.Books", "Ispit.Books\Ispit.Books.csproj", "{9DC9B9EE-B8FA-4B21-A52A-DB5C7D4D3DF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShop_Api", "WebShop_Api\WebShop_Api.csproj", "{AC2C3AEC-1F07-4844-8536-6254298056CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9DC9B9EE-B8FA-4B21-A52A-DB5C7D4D3DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DC9B9EE-B8FA-4B21-A52A-DB5C7D4D3DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DC9B9EE-B8FA-4B21-A52A-DB5C7D4D3DF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC2C3AEC-1F07-4844-8536-6254298056CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC2C3AEC-1F07-4844-8536-6254298056CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC2C3AEC-1F07-4844-8536-6254298056CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC2C3AEC-1F07-4844-8536-6254298056CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
