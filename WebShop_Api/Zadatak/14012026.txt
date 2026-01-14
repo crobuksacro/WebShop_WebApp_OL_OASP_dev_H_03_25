@@ -1,0 +1,1 @@
+﻿1. Doradite WebShop_Api tako da implementirate endpointe za upravljanje kategorijama proizvoda (CRUD)
