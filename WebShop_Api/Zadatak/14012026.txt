@@ -1,1 +1,2 @@
 ﻿1. Doradite WebShop_Api tako da implementirate endpointe za upravljanje kategorijama proizvoda (CRUD)
+2. Po uzoru na prvi zadatak napravite sve za nardudzbu korsteci OrderController => OrderService =>
