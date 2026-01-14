@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using WebShop_Api.Services.Interfaces;
+using WebShop_Shared.Model.ViewModel.ProductModels;
 
 namespace WebShop_Api.Controllers
 {
@@ -8,20 +10,24 @@ namespace WebShop_Api.Controllers
     {
 
         private readonly ILogger<ProductController> _logger;
-
-        public ProductController(ILogger<ProductController> logger)
+        private readonly IProductService _productService;
+        public ProductController(ILogger<ProductController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
 
 
-
-        [HttpGet]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCurrentDate()
+        /// <summary>
+        /// Retrieves a list of product view models, optionally filtered by a set of product IDs.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("products")]
+        [ProducesResponseType(typeof(List<ProductViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(/*_calendarService.GetCurrentDate()*/);
+            return Ok(await _productService.GetAll());
         }
     }
 }
