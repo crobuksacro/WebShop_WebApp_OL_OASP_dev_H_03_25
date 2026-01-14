@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebShop_Api.Model.Dbo;
 using WebShop_Api.Services.Interfaces;
+using WebShop_Shared.Model.Binding.ProductModels;
 using WebShop_Shared.Model.ViewModel.ProductModels;
 
 namespace WebShop_Api.Services.Implementations
@@ -38,6 +39,58 @@ namespace WebShop_Api.Services.Implementations
             }
 
             return _mapper.Map<List<ProductViewModel>>(dbo);
+        }
+
+
+
+        /// <summary>
+        /// Adds a new product to the database.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<ProductViewModel> Add(ProductBinding model)
+        {
+            var dbo = _mapper.Map<Product>(model);
+            _context.Products.Add(dbo);
+            dbo.Created = DateTime.UtcNow;
+            dbo.Valid = true;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProductViewModel>(dbo);
+        }
+
+        /// <summary>
+        /// Updates an existing product.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<ProductViewModel?> Update(ProductUpdateBinding model)
+        {
+            var dbo = await _context.Products.FirstOrDefaultAsync(p => p.Id == model.Id);
+            if (dbo == null)
+                return null;
+
+            _mapper.Map(model, dbo);
+            dbo.Updated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<ProductViewModel>(dbo);
+        }
+
+
+        /// <summary>
+        /// Deletes a product by setting its Valid property to false. 
+        /// soft delete.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ProductViewModel> Delete(long id)
+        {
+            var dbo = await _context.Products
+                .Include(p => p.ProductCategory)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            dbo!.Valid = false;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProductViewModel>(dbo);
         }
 
     }
