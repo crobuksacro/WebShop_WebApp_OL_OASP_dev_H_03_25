@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebShop_WebApp.Data;
@@ -48,8 +49,10 @@ namespace WebShop_WebApp
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IDocumentService, DocumentService>();
+            builder.Services.AddScoped<IValidationService, ValidationService>();
 
 
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Transient);
             builder.Services.AddSingleton<IIdentitySetup, IdentitySetup>();
 
 
