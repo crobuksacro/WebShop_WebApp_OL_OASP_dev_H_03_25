@@ -36,4 +36,37 @@ namespace WebShop_Api.FluentValidation
 
         }
     }
+
+
+    public class ProductUpdateBindingValidator : AbstractValidator<ProductUpdateBinding>
+    {
+        public ProductUpdateBindingValidator(IValidationService validationService)
+        {
+
+
+            RuleFor(x => x.Id)
+                .NotEmpty().WithErrorCode(ErrorCodes.MissingValue)
+                .MustAsync(async (id, cancellation) => await validationService.ProductExists(id))
+                .WithErrorCode(ErrorCodes.NotFound);
+
+            RuleFor(x => x.Name)
+                .NotEmpty().WithErrorCode(ErrorCodes.MissingValue)
+                .MaximumLength(200).WithErrorCode(ErrorCodes.InvalidLength);
+
+            RuleFor(x => x.Description)
+                .NotEmpty().WithErrorCode(ErrorCodes.MissingValue)
+                .MaximumLength(1000).WithErrorCode(ErrorCodes.InvalidLength);
+
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithErrorCode(ErrorCodes.OutOfAllowedRange);
+
+            RuleFor(x => x.QuantityTypeId)
+                .NotEmpty().WithErrorCode(ErrorCodes.MissingValue)
+                .MustAsync(async (id, cancellation) => await validationService.QuantityTypeExists(id))
+                .WithErrorCode(ErrorCodes.NotFound);
+
+
+
+        }
+    }
 }

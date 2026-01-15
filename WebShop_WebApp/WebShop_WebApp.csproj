@@ -21,4 +21,8 @@
     <ProjectReference Include="..\WebShop_Shared\WebShop_Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\API\" />
+  </ItemGroup>
+
 </Project>

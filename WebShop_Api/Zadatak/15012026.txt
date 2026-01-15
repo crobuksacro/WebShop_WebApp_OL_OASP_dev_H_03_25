@@ -1,1 +1,2 @@
 ﻿1. Doradite ProductController tako da sve metode koje imaju ulazni objekt, budu validiriani od stane fulent validacije
+2. Unutar projekta WebShop_WebApp dodajte replike kontrolera, koji su za API konzumaciju. Potrebno je dodati i fuluent validaciju kako bi se validirali ulazni objekti

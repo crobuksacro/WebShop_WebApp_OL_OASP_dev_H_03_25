@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using WebShop_Api.FluentValidation;
 using WebShop_Api.Services.Interfaces;
 using WebShop_Shared.Model.Binding.ProductModels;
 using WebShop_Shared.Model.ViewModel.ProductModels;
@@ -14,16 +15,20 @@ namespace WebShop_Api.Controllers
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _productService;
         private readonly IValidator<ProductBinding> _productBindingValidator;
-
-
+        private readonly IValidator<ProductUpdateBinding> _productUpdateBindingValidator;
+        private readonly IValidator<ProductCategoryIdBinding> _productCategoryIdBindingValidator;
 
         public ProductController(ILogger<ProductController> logger,
             IProductService productService,
-            IValidator<ProductBinding> productBindingValidator)
+            IValidator<ProductBinding> productBindingValidator,
+            IValidator<ProductUpdateBinding> productUpdateBindingValidator,
+            IValidator<ProductCategoryIdBinding> productCategoryIdBindingValidator)
         {
             _logger = logger;
             _productService = productService;
             _productBindingValidator = productBindingValidator;
+            _productUpdateBindingValidator = productUpdateBindingValidator;
+            _productCategoryIdBindingValidator = productCategoryIdBindingValidator;
         }
 
         /// <summary>
@@ -68,7 +73,13 @@ namespace WebShop_Api.Controllers
         [ProducesResponseType(typeof(ProductViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update([FromBody] ProductUpdateBinding model)
         {
-            return Ok(await _productService.Update(model));
+            var result = await _productUpdateBindingValidator.ValidateAsync(model);
+            if (result.IsValid)
+            {
+                return Ok(await _productService.Update(model));
+            }
+
+            return BadRequest(result.Errors);
         }
         /// <summary>
         /// Deletes a product by setting its Valid property to false. 
@@ -112,9 +123,15 @@ namespace WebShop_Api.Controllers
         /// <returns></returns>
         [HttpDelete("categorie/{id}")]
         [ProducesResponseType(typeof(ProductCategoryViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteProductCategory(long id)
+        public async Task<IActionResult> DeleteProductCategory(ProductCategoryIdBinding model)
         {
-            return Ok(await _productService.DeleteProductCategory(id));
+            var result = await _productCategoryIdBindingValidator.ValidateAsync(model);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok(await _productService.DeleteProductCategory(model.Id));
         }
 
         /// <summary>
@@ -137,6 +154,13 @@ namespace WebShop_Api.Controllers
         [ProducesResponseType(typeof(ProductCategoryViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdProductCategory(long id)
         {
+
+            var result = await _productCategoryIdBindingValidator.ValidateAsync(new ProductCategoryIdBinding { Id = id });
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
+
             return Ok(await _productService.GetByIdProductCategory(id));
         }
     }

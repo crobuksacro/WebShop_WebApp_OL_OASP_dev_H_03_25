@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8c29dc4c-87a2-4305-ace9-b5eac87b09ec",
+		"_postman_id": "56eba5d7-a803-4b2f-b2a3-0a9aec666701",
 		"name": "WebShopAlgebraTest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4263423"
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Ogledalo\",\r\n  \"description\": \"Ogledalo\",\r\n  \"price\": 15,\r\n  \"quantity\": 50,\r\n  \"productCategoryId\": 1,\r\n  \"quantityTypeId\": 4\r\n}",
+					"raw": "{\r\n  \"name\": \"Ogledalo4\",\r\n  \"description\": \"Ogledalo5\",\r\n  \"price\": 15,\r\n  \"quantity\": 50,\r\n  \"productCategoryId\": 1,\r\n  \"quantityTypeId\": 4\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -30,6 +30,79 @@
 					"path": [
 						"api",
 						"Product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 10003,\r\n    \"quantityTypeId\": 4,\r\n    \"name\": \"Ogledalo4\",\r\n    \"description\": \"Ogledalo5\",\r\n    \"price\": 15,\r\n    \"quantity\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7219/api/Product",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7219",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product Category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7219/api/Product/categorie/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7219",
+					"path": [
+						"api",
+						"Product",
+						"categorie",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product Category",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7219/api/Product/categorie/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7219",
+					"path": [
+						"api",
+						"Product",
+						"categorie",
+						"1"
 					]
 				}
 			},

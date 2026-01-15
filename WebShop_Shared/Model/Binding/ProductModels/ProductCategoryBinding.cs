@@ -1,4 +1,8 @@
-﻿using WebShop_Shared.Model.Base.ProductModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebShop_Shared.Model.Base.ProductModels;
+
+
+
 
 namespace WebShop_Shared.Model.Binding.ProductModels
 {
@@ -8,6 +12,13 @@ namespace WebShop_Shared.Model.Binding.ProductModels
 
     public class ProductCategoryUpdateBinding : ProductCategoryBase
     {
+        public long Id { get; set; }
+    }
+
+
+    public class ProductCategoryIdBinding
+    {
+        [FromRoute]
         public long Id { get; set; }
     }
 

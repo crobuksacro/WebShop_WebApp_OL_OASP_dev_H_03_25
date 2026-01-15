@@ -34,8 +34,16 @@ namespace WebShop_Api.Services.Implementations
             return await _context.QuantityTypes.AnyAsync(pc => pc.Id == quantityTypeId);
 
         }
+        /// <summary>
+        /// Provides an asynchronous method to check if a product with the specified ID exists in the database.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public async Task<bool> ProductExists(long productId)
+        {
+            return await _context.Products.AnyAsync(p => p.Id == productId);
 
-
+        }
 
     }
 }

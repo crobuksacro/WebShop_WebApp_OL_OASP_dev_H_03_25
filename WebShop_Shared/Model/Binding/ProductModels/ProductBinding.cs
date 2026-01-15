@@ -14,7 +14,7 @@ namespace WebShop_Shared.Model.Binding.ProductModels
     public class ProductUpdateBinding : ProductBase
     {
         public long Id { get; set; }
-        public long? QuantityTypeId { get; set; }
+        public long QuantityTypeId { get; set; }
         public IFormFile? Img { get; set; }
     }
 
