@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WebShop_Api.Mapping;
 using WebShop_Api.Model.Dbo;
@@ -30,7 +31,9 @@ namespace WebShop_Api
             var mapper = configuration.CreateMapper();
             builder.Services.AddSingleton(mapper);
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IValidationService, ValidationService>();
 
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Transient);
             #endregion
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

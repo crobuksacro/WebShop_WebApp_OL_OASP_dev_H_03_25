@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebShop_Api.Services.Interfaces;
 using WebShop_Shared.Model.Binding.ProductModels;
@@ -12,10 +13,17 @@ namespace WebShop_Api.Controllers
 
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _productService;
-        public ProductController(ILogger<ProductController> logger, IProductService productService)
+        private readonly IValidator<ProductBinding> _productBindingValidator;
+
+
+
+        public ProductController(ILogger<ProductController> logger,
+            IProductService productService,
+            IValidator<ProductBinding> productBindingValidator)
         {
             _logger = logger;
             _productService = productService;
+            _productBindingValidator = productBindingValidator;
         }
 
         /// <summary>
@@ -39,7 +47,15 @@ namespace WebShop_Api.Controllers
         [ProducesResponseType(typeof(ProductViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Add([FromBody] ProductBinding model)
         {
-            return Ok(await _productService.Add(model));
+
+            var result = await _productBindingValidator.ValidateAsync(model);
+            if (result.IsValid)
+            {
+                return Ok(await _productService.Add(model));
+            }
+
+            return BadRequest(result.Errors);
+
         }
 
 

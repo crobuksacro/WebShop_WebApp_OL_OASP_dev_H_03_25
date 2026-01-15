@@ -7,7 +7,7 @@ namespace WebShop_Shared.Model.Binding.ProductModels
     public class ProductBinding : ProductBase
     {
         public long ProductCategoryId { get; set; }
-        public long? QuantityTypeId { get; set; }
+        public long QuantityTypeId { get; set; }
         public List<QuantityTypeViewModel>? QuantityTypes { get; set; }
     }
 
