@@ -1,0 +1,1 @@
+﻿1. Doradite ProductController tako da sve metode koje imaju ulazni objekt, budu validiriani od stane fulent validacije
