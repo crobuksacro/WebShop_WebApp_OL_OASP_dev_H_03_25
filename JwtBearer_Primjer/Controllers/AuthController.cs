@@ -3,6 +3,7 @@ using JwtBearer_Primjer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebShop_Shared.Model.Binding.AccountModels;
+using WebShop_Shared.Model.Dto;
 using WebShop_Shared.Model.ViewModel.AccountModels;
 
 namespace JwtBearer_Primjer.Controllers
