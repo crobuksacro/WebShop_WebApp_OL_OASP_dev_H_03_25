@@ -30,6 +30,76 @@ namespace JwtBearer_Primjer.Services.Implementations
             this.appSettings = appSettings.Value;
         }
 
+
+        /// <summary>
+        /// Refreshes an expired access token using a refresh token.
+        /// </summary>
+        /// <param name="tokenModel">The token model binding containing the expired access token and refresh token.</param>
+        /// <returns>
+        /// A Task resulting in a <see cref="TokenViewModel"/> containing the new access token and refresh token.
+        /// </returns>
+        /// <exception cref="Exception">Thrown when the provided tokens are invalid or the refresh token has expired.</exception>
+        /// <remarks>
+        /// This method validates the provided refresh token against the stored token and its expiry time for the associated user. If the validation is successful, it generates a new access token and refresh token for the user. The new refresh token replaces the old one in the user's record. The method returns the new tokens in a TokenViewModel. If the tokens are invalid or the refresh token has expired, an exception is thrown.
+        /// </remarks>
+        public async Task<TokenViewModel> RefreshToken(TokenModelBinding tokenModel)
+        {
+            string? accessToken = tokenModel.AccessToken;
+            string? refreshToken = tokenModel.RefreshToken;
+
+            var principal = GetPrincipalFromExpiredToken(accessToken);
+
+            string username = principal.Identity.Name;
+            var user = await userManager.FindByNameAsync(username);
+
+            if (user == null || user.RefreshToken != refreshToken)
+            {
+                throw new Exception("Invalid access token or refresh token");
+            }
+
+            var newAccessToken = await CreateToken(user);
+            var newRefreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = newRefreshToken;
+            await userManager.UpdateAsync(user);
+
+            return new TokenViewModel
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+                RefreshToken = newRefreshToken
+            };
+        }
+
+        /// <summary>
+        /// Extracts the claims principal from an expired JWT (JSON Web Token).
+        /// </summary>
+        /// <param name="token">The expired JWT from which the claims principal is to be extracted.</param>
+        /// <returns>
+        /// A <see cref="ClaimsPrincipal"/> extracted from the expired token, or null if the token is invalid.
+        /// </returns>
+        /// <exception cref="SecurityTokenException">Thrown when the token is invalid or not a JWT with the expected algorithm.</exception>
+        /// <remarks>
+        /// This method parses the expired JWT and extracts the claims principal without validating the token's expiration. It validates the issuer signing key and the token's algorithm. The method throws a SecurityTokenException if the token is not a valid JWT or does not use the expected HMAC SHA256 algorithm. This is typically used for refresh token scenarios where the token's expiration is extended.
+        /// </remarks>
+        private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Jwt.Key)),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+
+        }
         /// <summary>
         /// Authenticates a user and generates an access token and a refresh token.
         /// </summary>

@@ -7,7 +7,7 @@ namespace JwtBearer_Primjer._Model.Dbo
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? RegistrationDate { get; set; }
-        public string RefreshToken { get; internal set; }
-        public DateTime RefreshTokenExpiryTime { get; internal set; }
+        public string? RefreshToken { get; internal set; }
+        public DateTime? RefreshTokenExpiryTime { get; internal set; }
     }
 }
