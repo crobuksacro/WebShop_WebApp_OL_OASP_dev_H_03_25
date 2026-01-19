@@ -11,6 +11,7 @@ namespace JwtBearer_Primjer.Context
 : base(options)
         {
         }
+        public DbSet<ShoppingItem> ShoppingItems { get; set; }
 
     }
 }
